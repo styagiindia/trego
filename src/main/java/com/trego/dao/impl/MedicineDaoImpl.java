@@ -15,7 +15,7 @@ public class MedicineDaoImpl implements IMedicineDao {
     @Override
     public List<Medicine> findAll() {
         Medicine medicine = new Medicine();
-        medicine.setName("111111");
+        medicine.setName("aaaaaaaa");
 
         return List.of(medicine);
     }
