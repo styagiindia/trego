@@ -4,6 +4,6 @@ import com.trego.beans.Medicine;
 
 import java.util.List;
 
-public interface IMedicineDao {
+public interface IMedicineRepository {
     List<Medicine> findAll();
 }
