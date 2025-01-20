@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/books")
-public class BookController {
+//@RequestMapping("/books")
+public class BookController{
+
+} /*{
 
     @Autowired
     private BookService bookService;
@@ -59,5 +61,5 @@ public class BookController {
         return bookService.findByPublishedDateAfter(date);
     }
 
-}
+}*/
 
