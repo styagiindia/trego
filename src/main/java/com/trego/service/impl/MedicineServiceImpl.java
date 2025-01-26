@@ -23,10 +23,10 @@ public class MedicineServiceImpl implements IMedicineService {
     }
 
     @Override
-    public Page<Medicine> searchMedicines(String search, int page, int size) {
+    public Page<Medicine> searchMedicines(String searchText, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return medicineRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(search, search, pageable);
-      
+        return medicineRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(searchText, search, pageable);
+
     }
 
 

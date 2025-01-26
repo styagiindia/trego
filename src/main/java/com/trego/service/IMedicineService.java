@@ -8,5 +8,5 @@ import java.util.List;
 public interface IMedicineService {
     List<Medicine> findAll();
 
-    Page<Medicine> searchMedicines(String search, int page, int size);
+    Page<Medicine> searchMedicines(String searchText, int page, int size);
 }

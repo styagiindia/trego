@@ -25,11 +25,11 @@ public class MedicineController {
 
     @GetMapping("/medicines/search")
     public Page<Medicine> searchProducts(
-            @RequestParam String search,
+            @RequestParam String searchText,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return medicineService.searchMedicines(search, page, size);
+        return medicineService.searchMedicines(searchText, page, size);
     }
 
 }
