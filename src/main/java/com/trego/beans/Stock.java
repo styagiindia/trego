@@ -1,0 +1,32 @@
+package com.trego.beans;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Data;
+
+
+@Data
+@Entity(name = "stocks")
+public class Stock {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private int mrp;
+    private int discount;
+    private int qty;
+
+    private String expiryDate;
+
+    @ManyToOne
+    @JoinColumn(name = "medicine_id")
+    @JsonIgnore
+    private Medicine medicine;
+
+
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor;
+
+}

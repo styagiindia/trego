@@ -1,15 +1,10 @@
 package com.trego.api;
 
-import com.trego.beans.Book;
-import com.trego.dao.impl.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
 import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
@@ -27,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 //@Testcontainers
 // JPA drop and create table, good for testing
 @TestPropertySource(properties = {"spring.jpa.hibernate.ddl-auto=update"})
-public class BookControllerTest {
+public class BookControllerTest /*{
 
     @LocalServerPort
     private Integer port;
@@ -41,12 +36,12 @@ public class BookControllerTest {
     BookRepository bookRepository;
 
     // static, all tests share this postgres container
-  /*  @Container
+  *//*  @Container
     @ServiceConnection
     static MySQLContainer<?> postgres = new MySQLContainer<>(
             "mysql:8.0-debian"
     );
-*/
+*//*
     @BeforeEach
     void testSetUp() {
 
@@ -69,7 +64,7 @@ public class BookControllerTest {
 
         bookRepository.saveAll(List.of(b1, b2, b3, b4));
     }
-/*
+*//*
 
     @Test
     void testFindAll() {
@@ -207,12 +202,12 @@ public class BookControllerTest {
 
     }
 
-    */
-/**
+    *//*
+*//**
      * Book b4 = new Book("Book D",
      * BigDecimal.valueOf(39.99),
      * LocalDate.of(2023, 5, 5));
-     *//*
+     *//**//*
 
     @Test
     public void testUpdate() {
@@ -251,6 +246,7 @@ public class BookControllerTest {
         assertEquals(LocalDate.of(2024, 1, 31), updatedBook.getPublishDate());
 
     }
-*/
+*//*
 
-}
+}*/
+{}

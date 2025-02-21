@@ -1,0 +1,27 @@
+package com.trego.api;
+
+import com.trego.beans.Medicine;
+import com.trego.beans.Stock;
+import com.trego.service.IMedicineService;
+import com.trego.service.IStockService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+public class StockController {
+
+    @Autowired
+    IStockService stockService;
+
+    @GetMapping("/stocks")
+    public List<Stock> retrieveMedicines() {
+        return stockService.findAll();
+    }
+
+
+}

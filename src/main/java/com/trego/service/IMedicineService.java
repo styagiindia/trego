@@ -1,12 +1,16 @@
 package com.trego.service;
 
 import com.trego.beans.Medicine;
+import com.trego.beans.MedicineWithStockAndVendorDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface IMedicineService {
-    List<Medicine> findAll();
+    List<MedicineWithStockAndVendorDTO> findAll();
 
-    Page<Medicine> searchMedicines(String searchText, int page, int size);
+    Medicine getMedicineById(Long id);
+
+    Page<MedicineWithStockAndVendorDTO> searchMedicines(String searchText, int page, int size);
+
 }

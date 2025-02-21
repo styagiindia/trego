@@ -10,9 +10,10 @@ import lombok.Data;
 @Entity(name = "medicines")
 public class Medicine {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
     private String manufacturer;
     private String saltComposition;

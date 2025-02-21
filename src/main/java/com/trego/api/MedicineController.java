@@ -1,11 +1,14 @@
 package com.trego.api;
 
 import com.trego.beans.Medicine;
+import com.trego.beans.MedicineWithStockAndVendorDTO;
 import com.trego.service.IMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,18 +21,26 @@ public class MedicineController {
     IMedicineService medicineService;
 
     @GetMapping("/medicines")
-    public List<Medicine> retrieveMedicines() {
+    public List<MedicineWithStockAndVendorDTO> retrieveMedicines() {
         return medicineService.findAll();
     }
 
+    // Get a specific medicine by ID
+    @GetMapping("/medicines/{id}")
+    public Medicine getMedicineById(@PathVariable Long id) {
+        return medicineService.getMedicineById(id);
+    }
 
     @GetMapping("/medicines/search")
-    public Page<Medicine> searchProducts(
+    public Page<MedicineWithStockAndVendorDTO> searchProducts(
             @RequestParam String searchText,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         return medicineService.searchMedicines(searchText, page, size);
     }
+
+
+
 
 }
