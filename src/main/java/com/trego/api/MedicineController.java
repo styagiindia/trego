@@ -1,6 +1,7 @@
 package com.trego.api;
 
 import com.trego.beans.Medicine;
+import com.trego.beans.MedicineDTO;
 import com.trego.beans.MedicineWithStockAndVendorDTO;
 import com.trego.service.IMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class MedicineController {
 
     // Get a specific medicine by ID
     @GetMapping("/medicines/{id}")
-    public Medicine getMedicineById(@PathVariable Long id) {
+    public MedicineDTO getMedicineById(@PathVariable Long id) {
         return medicineService.getMedicineById(id);
     }
 

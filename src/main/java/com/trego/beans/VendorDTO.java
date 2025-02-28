@@ -7,21 +7,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-@Entity(name = "vendors")
-public class Vendor {
+public class VendorDTO {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-    private  String druglicense;
-    private String gistin;
 
+    private  String licence;
+    private String gstNumber;
+    private String address;
     private String logo;
+
     private String lat;
     private String lng;
-    private String address;
+    private List<Stock> offLineStocks;
+
+    private List<Stock> onLineStocks;
 }

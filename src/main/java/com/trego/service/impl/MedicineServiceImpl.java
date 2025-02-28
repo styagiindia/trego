@@ -1,6 +1,7 @@
 package com.trego.service.impl;
 
 import com.trego.beans.Medicine;
+import com.trego.beans.MedicineDTO;
 import com.trego.beans.MedicineWithStockAndVendorDTO;
 import com.trego.beans.Stock;
 import com.trego.dao.impl.MedicineRepository;
@@ -41,8 +42,22 @@ public class MedicineServiceImpl implements IMedicineService {
     }
 
     @Override
-    public Medicine getMedicineById(Long id) {
-        return medicineRepository.findById(id).orElse(null);
+    public MedicineDTO getMedicineById(Long id) {
+        Medicine medicine =  medicineRepository.findById(id).orElse(null);
+
+        MedicineDTO medicineDTO = new MedicineDTO();
+        medicineDTO.setId(medicine.getId());
+        medicineDTO.setMedicineType(medicine.getMedicineType());
+        medicineDTO.setName(medicine.getName());
+        medicineDTO.setSaltComposition(medicine.getSaltComposition());
+        medicineDTO.setManufacturer(medicine.getManufacturer());
+        medicineDTO.setDescription(medicine.getDescription());
+        medicineDTO.setPhoto1(medicine.getPhoto1());
+
+        List<Stock> stocks   = stockRepository.findByMedicineId(medicine.getId());
+        medicineDTO.setOffLineStocks(stocks);
+        medicineDTO.setOnLineStocks(new ArrayList<>());
+        return  medicineDTO;
     }
 
     @Override
