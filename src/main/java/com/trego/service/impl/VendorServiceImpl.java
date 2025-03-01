@@ -1,8 +1,7 @@
 package com.trego.service.impl;
 
-import com.trego.beans.Stock;
-import com.trego.beans.Vendor;
-import com.trego.beans.VendorDTO;
+import com.trego.beans.*;
+import com.trego.dao.impl.MedicineRepository;
 import com.trego.dao.impl.StockRepository;
 import com.trego.dao.impl.VendorRepository;
 import com.trego.service.IVendorService;
@@ -21,6 +20,9 @@ public class VendorServiceImpl implements IVendorService {
     @Autowired
     private StockRepository stockRepository;
 
+    @Autowired
+    private MedicineRepository medicineRepository;
+
     public List<Vendor> findAll() {
         return vendorRepository.findAll(); // This will fetch all vendors
     }
@@ -38,9 +40,30 @@ public class VendorServiceImpl implements IVendorService {
         vendorDTO.setLat(vendor.getLat());
         vendorDTO.setLng(vendor.getLng());
 
+        List<StockDTO> stockDTOS = new ArrayList<>();
         List<Stock> stocks   = stockRepository.findByVendorId(vendor.getId());
-        vendorDTO.setOffLineStocks(stocks);
-        vendorDTO.setOnLineStocks(new ArrayList<>());
+        List<MedicineDTO> medicineDTOList = new ArrayList<>();
+        for(Stock stock : stocks){
+            Medicine medicine = stock.getMedicine();
+            MedicineDTO medicineDTO = new MedicineDTO();
+            medicineDTO.setId(medicine.getId());
+            medicineDTO.setName(medicine.getName());
+            medicineDTO.setManufacturer(medicine.getManufacturer());
+            medicineDTO.setMedicineType(medicine.getMedicineType());
+            medicineDTO.setDescription(medicine.getDescription());
+            medicineDTO.setSaltComposition(medicine.getSaltComposition());
+            medicineDTO.setPhoto1(medicine.getPhoto1());
+
+            medicineDTO.setDiscount(stock.getDiscount());
+            medicineDTO.setQty(stock.getQty());
+            medicineDTO.setMrp(stock.getMrp());
+            medicineDTO.setExpiryDate(stock.getExpiryDate());
+
+            medicineDTOList.add(medicineDTO);
+
+        }
+
+        vendorDTO.setMedicines(medicineDTOList);
         return vendorDTO;
 
     }
