@@ -19,7 +19,7 @@ public class Vendor {
     private String name;
     private  String druglicense;
     private String gistin;
-
+    private String category;
     private String logo;
     private String lat;
     private String lng;

@@ -26,8 +26,18 @@ public class VendorServiceImpl implements IVendorService {
     @Autowired
     private MedicineRepository medicineRepository;
 
-    public List<Vendor> findAll() {
-        return vendorRepository.findAll(); // This will fetch all vendors
+    public List<VendorDTO> findVendorsByType(String type) {
+        List<VendorDTO> vendorDTOs = new ArrayList<>();
+
+        List<Vendor>  vendors = vendorRepository.findByCategory(type); // This will fetch all vendors
+        for (Vendor vendor : vendors){
+            VendorDTO vendorDTO = new VendorDTO();
+            vendorDTO.setId(vendor.getId());
+            vendorDTO.setName(vendor.getName());
+            vendorDTO.setLogo(vendor.getLogo());
+            vendorDTOs.add(vendorDTO);
+        }
+        return  vendorDTOs;
     }
 
     @Override
