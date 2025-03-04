@@ -1,11 +1,12 @@
 package com.trego.service.impl;
 
 import com.trego.beans.Medicine;
-import com.trego.beans.MedicineDTO;
+import com.trego.dto.MedicineDTO;
 import com.trego.beans.MedicineWithStockAndVendorDTO;
 import com.trego.beans.Stock;
 import com.trego.dao.impl.MedicineRepository;
 import com.trego.dao.impl.StockRepository;
+import com.trego.dto.SubstituteDTO;
 import com.trego.service.IMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -90,6 +91,11 @@ public class MedicineServiceImpl implements IMedicineService {
         medicineWithStockAndVendorDTO.setManufacturer(medicine.getManufacturer());
         medicineWithStockAndVendorDTO.setSaltComposition(medicine.getSaltComposition());
         medicineWithStockAndVendorDTO.setPhoto1(medicine.getPhoto1());
+        medicineWithStockAndVendorDTO.setUseOf(medicine.getUseOf());
+        SubstituteDTO substituteDTO =  new SubstituteDTO();
+        substituteDTO.setText("60% Low Price Substitute Avaliable ");
+        medicineWithStockAndVendorDTO.setSubstituteDTO(substituteDTO);
+        medicineWithStockAndVendorDTO.setPacking(medicine.getPacking());
         return  medicineWithStockAndVendorDTO;
     }
 }

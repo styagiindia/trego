@@ -1,8 +1,6 @@
-package com.trego.beans;
+package com.trego.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.Data;
 
 
