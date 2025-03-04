@@ -1,21 +1,25 @@
 package com.trego.api;
 
+import com.trego.dto.CategoryDTO;
 import com.trego.dto.MainDTO;
 import com.trego.service.IMainService;
+import com.trego.service.IMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-public class MainController {
+public class MasterController {
 
     @Autowired
-    IMainService mainService;
+    IMasterService masterService;
 
-    @GetMapping("/loadAll")
-    public MainDTO loadAll(@RequestParam long lat, @RequestParam long lng) {
-        return mainService.loadAll(lat, lng);
+    @GetMapping("/categories")
+    public List<CategoryDTO> allCategories(@RequestParam String type) {
+        return masterService.loadCategoriesByType(type);
     }
 
 }

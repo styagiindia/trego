@@ -1,17 +1,13 @@
 package com.trego.service.impl;
 
-import com.trego.beans.Medicine;
-import com.trego.beans.MedicineWithStockAndVendorDTO;
-import com.trego.beans.Stock;
-import com.trego.beans.Vendor;
-import com.trego.dao.impl.MedicineRepository;
-import com.trego.dao.impl.StockRepository;
-import com.trego.dao.impl.VendorRepository;
+import com.trego.beans.*;
+import com.trego.dao.impl.*;
 import com.trego.dto.MainDTO;
 import com.trego.dto.MedicineDTO;
 import com.trego.dto.StockDTO;
 import com.trego.dto.VendorDTO;
 import com.trego.service.IMainService;
+import com.trego.service.IMasterService;
 import com.trego.service.IMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,25 +31,27 @@ public class MainServiceImpl implements IMainService {
     @Autowired
     VendorRepository vendorRepository;
 
+    @Autowired
+    BannerRepository bannerRepository;
+
+    @Autowired
+    IMasterService masterService;
+
     @Override
-    public MainDTO loadAll(String address,  long lat, long lng) {
+    public MainDTO loadAll( long lat, long lng) {
         MainDTO mainDTO = new MainDTO();
+
+        List<Banner> topBanners = bannerRepository.findByPosition("top");
+        mainDTO.setTopBanners(topBanners);
+        List<Banner> middleBanners = bannerRepository.findByPosition("middle");
+        mainDTO.setMiddleBanners(middleBanners);
+
         List<VendorDTO> topOfflineVendors = new ArrayList<>();
         List<VendorDTO> topOnlineVendors = new ArrayList<>();
-
-
         List<Vendor> vendors = vendorRepository.findAll();
         for (Vendor vendor : vendors){
 
-            VendorDTO vendorDTO = new VendorDTO();
-            vendorDTO.setId(vendor.getId());
-            vendorDTO.setName(vendor.getName());
-            vendorDTO.setLogo(vendor.getLogo());
-            vendorDTO.setGstNumber(vendor.getGistin());
-            vendorDTO.setLicence(vendor.getDruglicense());
-            vendorDTO.setAddress(vendor.getAddress());
-            vendorDTO.setLat(vendor.getLat());
-            vendorDTO.setLng(vendor.getLng());
+            VendorDTO vendorDTO = populateVendorDTO(vendor);
             List<StockDTO> stockDTOS = new ArrayList<>();
             List<Stock> stocks   = stockRepository.findByVendorId(vendor.getId());
             List<MedicineDTO> medicineDTOList = populateMedicineDTOs(stocks);
@@ -64,9 +62,24 @@ public class MainServiceImpl implements IMainService {
                 topOnlineVendors.add(vendorDTO);
             }
         }
+
+        mainDTO.setSubCategories(masterService.loadCategoriesByType("medicine"));
         mainDTO.setOffLineTopVendor(topOfflineVendors);
         mainDTO.setOnLineTopVendor(topOnlineVendors);
         return mainDTO;
+    }
+
+    private static VendorDTO populateVendorDTO(Vendor vendor) {
+        VendorDTO vendorDTO = new VendorDTO();
+        vendorDTO.setId(vendor.getId());
+        vendorDTO.setName(vendor.getName());
+        vendorDTO.setLogo(vendor.getLogo());
+        vendorDTO.setGstNumber(vendor.getGistin());
+        vendorDTO.setLicence(vendor.getDruglicense());
+        vendorDTO.setAddress(vendor.getAddress());
+        vendorDTO.setLat(vendor.getLat());
+        vendorDTO.setLng(vendor.getLng());
+        return vendorDTO;
     }
 
     private static List<MedicineDTO> populateMedicineDTOs(List<Stock> stocks) {
