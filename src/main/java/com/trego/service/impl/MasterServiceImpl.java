@@ -25,7 +25,7 @@ public class MasterServiceImpl implements IMasterService {
              CategoryDTO categoryDTO = new CategoryDTO();
              categoryDTO.setId(category.getId());
              categoryDTO.setName(category.getName());
-             categoryDTO.setLogo(Constants.LOGO_BASE_URL + category.getLogo());
+             categoryDTO.setLogo(Constants.LOGO_BASE_URL + Constants.CATEGORIES_MEDICINE_BASE_URL + category.getLogo());
              categoryDTOs.add(categoryDTO);
          }
         return categoryDTOs;

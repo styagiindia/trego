@@ -35,7 +35,11 @@ public class VendorServiceImpl implements IVendorService {
             VendorDTO vendorDTO = new VendorDTO();
             vendorDTO.setId(vendor.getId());
             vendorDTO.setName(vendor.getName());
-            vendorDTO.setLogo(vendor.getLogo());
+            if(vendor.getCategory().equalsIgnoreCase("retail")) {
+                vendorDTO.setLogo(Constants.LOGO_BASE_URL + Constants.OFFLINE_BASE_URL+ vendor.getLogo());
+            }else{
+                vendorDTO.setLogo(Constants.LOGO_BASE_URL + Constants.ONLINE_BASE_URL+ vendor.getLogo());
+            }
             vendorDTOs.add(vendorDTO);
         }
         return  vendorDTOs;
