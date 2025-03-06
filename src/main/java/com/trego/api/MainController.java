@@ -14,7 +14,7 @@ public class MainController {
     IMainService mainService;
 
     @GetMapping("/loadAll")
-    public MainDTO loadAll(@RequestParam long lat, @RequestParam long lng) {
+    public MainDTO loadAll(@RequestParam double lat, @RequestParam double lng) {
         return mainService.loadAll(lat, lng);
     }
 

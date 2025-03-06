@@ -4,6 +4,7 @@ import com.trego.beans.Category;
 import com.trego.dao.impl.*;
 import com.trego.dto.*;
 import com.trego.service.IMasterService;
+import com.trego.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class MasterServiceImpl implements IMasterService {
              CategoryDTO categoryDTO = new CategoryDTO();
              categoryDTO.setId(category.getId());
              categoryDTO.setName(category.getName());
-             categoryDTO.setLogo(category.getLogo());
+             categoryDTO.setLogo(Constants.LOGO_BASE_URL + category.getLogo());
              categoryDTOs.add(categoryDTO);
          }
         return categoryDTOs;

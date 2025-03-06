@@ -9,6 +9,7 @@ import com.trego.dto.VendorDTO;
 import com.trego.service.IMainService;
 import com.trego.service.IMasterService;
 import com.trego.service.IMedicineService;
+import com.trego.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +39,7 @@ public class MainServiceImpl implements IMainService {
     IMasterService masterService;
 
     @Override
-    public MainDTO loadAll( long lat, long lng) {
+    public MainDTO loadAll( double lat, double lng) {
         MainDTO mainDTO = new MainDTO();
 
         List<Banner> topBanners = bannerRepository.findByPosition("top");
@@ -73,7 +74,11 @@ public class MainServiceImpl implements IMainService {
         VendorDTO vendorDTO = new VendorDTO();
         vendorDTO.setId(vendor.getId());
         vendorDTO.setName(vendor.getName());
-        vendorDTO.setLogo(vendor.getLogo());
+        if(vendor.getCategory().equalsIgnoreCase("retail")) {
+            vendorDTO.setLogo(Constants.LOGO_BASE_URL + Constants.OFFLINE_BASE_URL+ vendor.getLogo());
+        }else{
+            vendorDTO.setLogo(Constants.LOGO_BASE_URL + Constants.ONLINE_BASE_URL+ vendor.getLogo());
+        }
         vendorDTO.setGstNumber(vendor.getGistin());
         vendorDTO.setLicence(vendor.getDruglicense());
         vendorDTO.setAddress(vendor.getAddress());
@@ -87,16 +92,17 @@ public class MainServiceImpl implements IMainService {
         for(Stock stock : stocks){
             Medicine medicine = stock.getMedicine();
             MedicineDTO medicineDTO = new MedicineDTO();
-            medicineDTO.setId(medicine.getId());
             medicineDTO.setName(medicine.getName());
-            medicineDTO.setManufacturer(medicine.getManufacturer());
             medicineDTO.setMedicineType(medicine.getMedicineType());
-            medicineDTO.setDescription(medicine.getDescription());
+            medicineDTO.setManufacturer(medicine.getManufacturer());
             medicineDTO.setSaltComposition(medicine.getSaltComposition());
-            medicineDTO.setPhoto1(medicine.getPhoto1());
+            medicineDTO.setPhoto1(Constants.LOGO_BASE_URL + Constants.MEDICINES_BASE_URL + medicine.getPhoto1());
+            medicineDTO.setUseOf(medicine.getUseOf());
+            medicineDTO.setPacking(medicine.getPacking());
             medicineDTO.setDiscount(stock.getDiscount());
             medicineDTO.setQty(stock.getQty());
             medicineDTO.setMrp(stock.getMrp());
+
             medicineDTO.setExpiryDate(stock.getExpiryDate());
             medicineDTOList.add(medicineDTO);
         }

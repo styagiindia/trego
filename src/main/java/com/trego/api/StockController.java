@@ -20,6 +20,7 @@ public class StockController {
 
     @GetMapping("/stocks")
     public List<Stock> retrieveMedicines() {
+
         return stockService.findAll();
     }
 

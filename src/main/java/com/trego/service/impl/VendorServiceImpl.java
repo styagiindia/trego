@@ -8,6 +8,7 @@ import com.trego.dto.MedicineDTO;
 import com.trego.dto.StockDTO;
 import com.trego.dto.VendorDTO;
 import com.trego.service.IVendorService;
+import com.trego.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +47,11 @@ public class VendorServiceImpl implements IVendorService {
         Vendor vendor = vendorRepository.findById(id).orElse(null);
         vendorDTO.setId(vendor.getId());
         vendorDTO.setName(vendor.getName());
-        vendorDTO.setLogo(vendor.getLogo());
+        if(vendor.getCategory().equalsIgnoreCase("retail")) {
+            vendorDTO.setLogo(Constants.LOGO_BASE_URL + Constants.OFFLINE_BASE_URL+ vendor.getLogo());
+        }else{
+            vendorDTO.setLogo(Constants.LOGO_BASE_URL + Constants.ONLINE_BASE_URL+ vendor.getLogo());
+        }
         vendorDTO.setGstNumber(vendor.getGistin());
         vendorDTO.setLicence(vendor.getDruglicense());
         vendorDTO.setAddress(vendor.getAddress());
@@ -65,7 +70,7 @@ public class VendorServiceImpl implements IVendorService {
             medicineDTO.setMedicineType(medicine.getMedicineType());
             medicineDTO.setDescription(medicine.getDescription());
             medicineDTO.setSaltComposition(medicine.getSaltComposition());
-            medicineDTO.setPhoto1(medicine.getPhoto1());
+            medicineDTO.setPhoto1(Constants.LOGO_BASE_URL  + Constants.MEDICINES_BASE_URL + medicine.getPhoto1());
 
             medicineDTO.setDiscount(stock.getDiscount());
             medicineDTO.setQty(stock.getQty());

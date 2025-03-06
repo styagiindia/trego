@@ -15,6 +15,9 @@ public class MedicineDTO {
     private String medicineType;
     private String description;
     private String photo1;
+
+    private String useOf;
+    private String packing;
     private List<Stock> offLineStocks;
     private List<Stock> onLineStocks;
     private int mrp;

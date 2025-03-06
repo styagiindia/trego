@@ -8,6 +8,7 @@ import com.trego.dao.impl.MedicineRepository;
 import com.trego.dao.impl.StockRepository;
 import com.trego.dto.SubstituteDTO;
 import com.trego.service.IMedicineService;
+import com.trego.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +54,7 @@ public class MedicineServiceImpl implements IMedicineService {
         medicineDTO.setSaltComposition(medicine.getSaltComposition());
         medicineDTO.setManufacturer(medicine.getManufacturer());
         medicineDTO.setDescription(medicine.getDescription());
-        medicineDTO.setPhoto1(medicine.getPhoto1());
+        medicineDTO.setPhoto1(Constants.LOGO_BASE_URL  + medicine.getPhoto1());
 
         List<Stock> stocks   = stockRepository.findByMedicineId(medicine.getId());
         medicineDTO.setOffLineStocks(stocks);
