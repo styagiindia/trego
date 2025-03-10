@@ -92,6 +92,7 @@ public class MainServiceImpl implements IMainService {
         for(Stock stock : stocks){
             Medicine medicine = stock.getMedicine();
             MedicineDTO medicineDTO = new MedicineDTO();
+            medicineDTO.setId(medicine.getId());
             medicineDTO.setName(medicine.getName());
             medicineDTO.setMedicineType(medicine.getMedicineType());
             medicineDTO.setManufacturer(medicine.getManufacturer());
