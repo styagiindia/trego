@@ -51,6 +51,8 @@ public class MedicineServiceImpl implements IMedicineService {
         medicineDTO.setId(medicine.getId());
         medicineDTO.setMedicineType(medicine.getMedicineType());
         medicineDTO.setName(medicine.getName());
+        medicineDTO.setUseOf(medicine.getUseOf());
+        medicineDTO.setPacking(medicine.getPacking());
         medicineDTO.setSaltComposition(medicine.getSaltComposition());
         medicineDTO.setManufacturer(medicine.getManufacturer());
         medicineDTO.setDescription(medicine.getDescription());
