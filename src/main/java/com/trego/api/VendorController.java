@@ -26,9 +26,9 @@ public class VendorController {
 
 
     @GetMapping("/vendors/{id}")
-    public VendorDTO retrieveVendorById(@PathVariable Long id) {
+    public VendorDTO retrieveVendorById(@PathVariable Long id , @RequestParam(required = false, defaultValue = "") String searchText) {
 
-        return vendorService.getVendorById(id);
+        return vendorService.getVendorByIdOrMedicine(id, searchText);
     }
 
 }
