@@ -1,7 +1,6 @@
 package com.trego.api;
 
-import com.trego.beans.Medicine;
-import com.trego.beans.Stock;
+import com.trego.dao.entity.Stock;
 import com.trego.service.IMedicineService;
 import com.trego.service.IStockService;
 import org.springframework.beans.factory.annotation.Autowired;

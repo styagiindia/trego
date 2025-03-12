@@ -1,4 +1,4 @@
-package com.trego.beans;
+package com.trego.dao.entity;
 
 
 import jakarta.persistence.Entity;

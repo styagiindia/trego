@@ -1,6 +1,9 @@
 package com.trego.service.impl;
 
-import com.trego.beans.*;
+import com.trego.dao.entity.Banner;
+import com.trego.dao.entity.Medicine;
+import com.trego.dao.entity.Stock;
+import com.trego.dao.entity.Vendor;
 import com.trego.dao.impl.*;
 import com.trego.dto.MainDTO;
 import com.trego.dto.MedicineDTO;

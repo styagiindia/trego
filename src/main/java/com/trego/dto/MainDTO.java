@@ -1,8 +1,7 @@
 package com.trego.dto;
 
 
-import com.trego.beans.Banner;
-import com.trego.beans.Category;
+import com.trego.dao.entity.Banner;
 import lombok.Data;
 
 import java.util.List;

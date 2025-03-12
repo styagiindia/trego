@@ -1,8 +1,7 @@
 package com.trego.api;
 
-import com.trego.beans.Medicine;
 import com.trego.dto.MedicineDTO;
-import com.trego.beans.MedicineWithStockAndVendorDTO;
+import com.trego.dto.MedicineWithStockAndVendorDTO;
 import com.trego.service.IMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +34,7 @@ public class MedicineController {
     @GetMapping("/medicines/search")
     public Page<MedicineWithStockAndVendorDTO> searchProducts(
             @RequestParam String searchText,
+            @RequestParam(required = false) long vendorId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {

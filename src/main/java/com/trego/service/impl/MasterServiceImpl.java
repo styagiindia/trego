@@ -1,6 +1,6 @@
 package com.trego.service.impl;
 
-import com.trego.beans.Category;
+import com.trego.dao.entity.Category;
 import com.trego.dao.impl.*;
 import com.trego.dto.*;
 import com.trego.service.IMasterService;

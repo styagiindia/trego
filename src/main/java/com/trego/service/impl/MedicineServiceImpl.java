@@ -1,11 +1,11 @@
 package com.trego.service.impl;
 
-import com.trego.beans.Medicine;
+import com.trego.dao.entity.Medicine;
+import com.trego.dao.entity.Stock;
 import com.trego.dto.MedicineDTO;
-import com.trego.beans.MedicineWithStockAndVendorDTO;
-import com.trego.beans.Stock;
 import com.trego.dao.impl.MedicineRepository;
 import com.trego.dao.impl.StockRepository;
+import com.trego.dto.MedicineWithStockAndVendorDTO;
 import com.trego.dto.SubstituteDTO;
 import com.trego.service.IMedicineService;
 import com.trego.utils.Constants;

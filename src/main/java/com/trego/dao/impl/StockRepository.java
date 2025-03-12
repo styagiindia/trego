@@ -1,6 +1,6 @@
 package com.trego.dao.impl;
 
-import com.trego.beans.Stock;
+import com.trego.dao.entity.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
