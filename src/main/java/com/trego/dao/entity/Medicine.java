@@ -1,10 +1,9 @@
 package com.trego.dao.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity(name = "medicines")
@@ -46,5 +45,7 @@ public class Medicine {
     private String photo3;
     private String photo4;
 
+    @OneToMany(mappedBy = "medicine")
+    private List<Stock> stocks;
 
 }

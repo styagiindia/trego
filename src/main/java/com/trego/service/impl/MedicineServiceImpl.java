@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MedicineServiceImpl implements IMedicineService {
@@ -65,23 +66,32 @@ public class MedicineServiceImpl implements IMedicineService {
     }
 
     @Override
-    public Page<MedicineWithStockAndVendorDTO> searchMedicines(String searchText, int page, int size) {
+    public Page<MedicineWithStockAndVendorDTO> searchMedicines(String searchText, long vendorId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         MedicineWithStockAndVendorDTO medicineWithStockAndVendorDTO = new MedicineWithStockAndVendorDTO();
 
         Page<Medicine> medicines = medicineRepository.findByNameContainingIgnoreCaseOrNameIgnoreCase(searchText, "", pageable);
-        return convertResponse(medicines);
+        return convertResponse(medicines, vendorId);
 
     }
 
-    private Page<MedicineWithStockAndVendorDTO> convertResponse(Page<Medicine> medicines) {
+    private Page<MedicineWithStockAndVendorDTO> convertResponse(Page<Medicine> medicines, long vendorId) {
         List<Medicine> tempMedicines = medicines.getContent();
         Page<MedicineWithStockAndVendorDTO> medicineDTOs = medicines.map(medicine -> {
-            List<Stock> stocks = stockRepository.findByMedicineId(medicine.getId());
             MedicineWithStockAndVendorDTO medicineWithStockAndVendorDTO = populateMedicineWithStockVendor(medicine);
-            medicineWithStockAndVendorDTO.setStocks(stocks);
+           if(!medicine.getStocks().isEmpty()){
+                  // Filter stocks from medicine.getStocks() based on vendorId
+               List<Stock> filteredStocks = medicine.getStocks().stream()
+                       .filter(stock -> stock.getVendor().getId() == vendorId)  // Only include stocks that match the vendorId
+                       .collect(Collectors.toList());
+               medicineWithStockAndVendorDTO.setStocks(filteredStocks);
+           }
             return medicineWithStockAndVendorDTO;
         });
+
+
+
+
         return medicineDTOs;
     }
 

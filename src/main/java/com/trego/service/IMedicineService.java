@@ -12,6 +12,6 @@ public interface IMedicineService {
 
     MedicineDTO getMedicineById(Long id);
 
-    Page<MedicineWithStockAndVendorDTO> searchMedicines(String searchText, int page, int size);
+    Page<MedicineWithStockAndVendorDTO> searchMedicines(String searchText, long vendorId, int page, int size);
 
 }
