@@ -29,4 +29,7 @@ public class Stock {
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
+
+
+
 }

@@ -45,7 +45,9 @@ public class Medicine {
     private String photo3;
     private String photo4;
 
-    @OneToMany(mappedBy = "medicine")
-    private List<Stock> stocks;
+
+    @OneToMany(mappedBy = "medicine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Stock> stocks; // One-to-many relationship with Stock
+
 
 }
