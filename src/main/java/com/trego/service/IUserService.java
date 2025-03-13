@@ -1,7 +1,6 @@
 package com.trego.service;
 
 import com.trego.dao.entity.User;
-import com.trego.dto.MainDTO;
 import com.trego.dto.UserDTO;
 
 import java.util.List;
@@ -9,9 +8,9 @@ import java.util.Optional;
 
 public interface IUserService {
 
- User createUser(UserDTO userDTO);
+ UserDTO createUser(UserDTO userDTO);
 
- Optional<User> getUserById(Long id);
+ UserDTO getUserById(Long id);
 
  List<User> getAllUsers();
 

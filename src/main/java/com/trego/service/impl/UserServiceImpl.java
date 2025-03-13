@@ -2,6 +2,7 @@ package com.trego.service.impl;
 
 import com.trego.dao.entity.User;
 import com.trego.dao.impl.UserRepository;
+import com.trego.dto.AddressDTO;
 import com.trego.dto.UserDTO;
 import com.trego.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -17,20 +19,39 @@ public class UserServiceImpl implements IUserService {
     private UserRepository userRepository;
 
     @Override
-    public User createUser(UserDTO userDTO) {
+    public UserDTO createUser(UserDTO userDTO) {
         User user = new User();
         user.setName(userDTO.getName());
         user.setPassword(userDTO.getPassword());
         user.setEmail(userDTO.getEmail());
         user.setRole(userDTO.getRole());
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        userDTO.setId(user.getId());
+        return userDTO;
     }
 
 
     @Override
-    public Optional<User> getUserById(Long id) {
+    public UserDTO getUserById(Long id) {
+        UserDTO userDTO = new UserDTO();
+        User user= userRepository.findById(id).get();
+        userDTO.setId(user.getId());
+       // userDTO.setMobile(user.getMobile());
+        userDTO.setName(user.getName());
+        userDTO.setEmail(user.getEmail());
 
-        return userRepository.findById(id);
+        List<AddressDTO> addressDTOS   =  user.getAddresses().stream()
+                .map(address -> new AddressDTO(
+                        address.getId(),
+                        address.getAddress(),
+                        address.getCity(),
+                        address.getLandmark(),
+                        address.getPincode(),
+                        address.getLat(),
+                        address.getLng(), address.getUser().getId()))
+                .collect(Collectors.toList());
+        userDTO.setAddress(addressDTOS);
+        return userDTO;
     }
 
 
