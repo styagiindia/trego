@@ -36,7 +36,7 @@ public class AddressController {
         return addressService.getAddressesByUserId(userId);
     }
 
-   // @PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Address> updateAddress(@PathVariable Long id, @RequestBody Address address) {
         Address updatedAddress = addressService.updateAddress(id, address);
         return ResponseEntity.ok(updatedAddress);

@@ -12,6 +12,6 @@ public class UserDTO {
     private String email;
     private String role;
     private String password;
-    private String mobile;
+    private long mobile;
    List<AddressDTO> address;
 }

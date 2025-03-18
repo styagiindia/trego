@@ -33,6 +33,8 @@ public class User {
     @Column(name = "remember_token")
     private String rememberToken;
 
+    private long mobile;
+
     private String role;
 
     @Column(name = "created_at")

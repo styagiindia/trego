@@ -36,7 +36,8 @@ public class UserServiceImpl implements IUserService {
         UserDTO userDTO = new UserDTO();
         User user= userRepository.findById(id).get();
         userDTO.setId(user.getId());
-       // userDTO.setMobile(user.getMobile());
+        userDTO.setRole(user.getRole());
+        userDTO.setMobile(user.getMobile());
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
 
