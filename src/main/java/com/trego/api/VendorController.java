@@ -1,7 +1,6 @@
 package com.trego.api;
 
 import com.trego.dto.VendorDTO;
-import com.trego.service.IStockService;
 import com.trego.service.IVendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,12 +1,10 @@
 package com.trego.api;
 
 import com.trego.dto.MedicineDTO;
-import com.trego.dto.MedicineWithStockAndVendorDTO;
+import com.trego.dao.entity.MedicineWithStockAndVendorDTO;
 import com.trego.service.IMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,11 +32,11 @@ public class MedicineController {
     @GetMapping("/medicines/search")
     public Page<MedicineWithStockAndVendorDTO> searchProducts(
             @RequestParam String searchText,
-            @RequestParam(required = false, defaultValue = "0") long vendorId,
+            @RequestParam(defaultValue = "0") long vendorId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return medicineService.searchMedicines(searchText, vendorId, page, size);
+        return medicineService.searchMedicines(searchText, vendorId,  page, size);
     }
 
 

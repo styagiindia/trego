@@ -1,11 +1,11 @@
 package com.trego.service.impl;
 
 import com.trego.dao.entity.Medicine;
-import com.trego.dao.entity.Stock;
 import com.trego.dto.MedicineDTO;
+import com.trego.dao.entity.MedicineWithStockAndVendorDTO;
+import com.trego.dao.entity.Stock;
 import com.trego.dao.impl.MedicineRepository;
 import com.trego.dao.impl.StockRepository;
-import com.trego.dto.MedicineWithStockAndVendorDTO;
 import com.trego.dto.SubstituteDTO;
 import com.trego.service.IMedicineService;
 import com.trego.utils.Constants;
@@ -13,12 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MedicineServiceImpl implements IMedicineService {
@@ -69,29 +67,25 @@ public class MedicineServiceImpl implements IMedicineService {
     public Page<MedicineWithStockAndVendorDTO> searchMedicines(String searchText, long vendorId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         MedicineWithStockAndVendorDTO medicineWithStockAndVendorDTO = new MedicineWithStockAndVendorDTO();
+        Page<Medicine> medicines = null;
+        if(vendorId != 0 ){
+            medicines = medicineRepository.findByNameWithVendorId(searchText, vendorId, pageable);
 
-        Page<Medicine> medicines = medicineRepository.findByNameContainingIgnoreCaseOrNameIgnoreCase(searchText, "", pageable);
-        return convertResponse(medicines, vendorId);
+        }else {
+             medicines = medicineRepository.findByNameContainingIgnoreCaseOrNameIgnoreCase(searchText, "", pageable);
+        }
+        return convertResponse(medicines);
 
     }
 
-    private Page<MedicineWithStockAndVendorDTO> convertResponse(Page<Medicine> medicines, long vendorId) {
+    private Page<MedicineWithStockAndVendorDTO> convertResponse(Page<Medicine> medicines) {
         List<Medicine> tempMedicines = medicines.getContent();
         Page<MedicineWithStockAndVendorDTO> medicineDTOs = medicines.map(medicine -> {
+          //  List<Stock> stocks = stockRepository.findByMedicineId(medicine.getId());
             MedicineWithStockAndVendorDTO medicineWithStockAndVendorDTO = populateMedicineWithStockVendor(medicine);
-           if(!medicine.getStocks().isEmpty()){
-                  // Filter stocks from medicine.getStocks() based on vendorId
-               List<Stock> filteredStocks = medicine.getStocks().stream()
-                       .filter(stock -> stock.getVendor().getId() == vendorId)  // Only include stocks that match the vendorId
-                       .collect(Collectors.toList());
-               medicineWithStockAndVendorDTO.setStocks(filteredStocks);
-           }
+            medicineWithStockAndVendorDTO.setStocks(medicine.getStocks());
             return medicineWithStockAndVendorDTO;
         });
-
-
-
-
         return medicineDTOs;
     }
 

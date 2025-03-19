@@ -11,14 +11,9 @@ import com.trego.dto.StockDTO;
 import com.trego.dto.VendorDTO;
 import com.trego.service.IMainService;
 import com.trego.service.IMasterService;
-import com.trego.service.IMedicineService;
 import com.trego.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
