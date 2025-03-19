@@ -1,4 +1,4 @@
-package com.trego.beans;
+package com.trego.dao.entity;
 
 
 import jakarta.persistence.Entity;
@@ -8,14 +8,19 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
-@Entity(name = "banner")
-public class Banner {
+@Entity(name = "vendors")
+public class Vendor {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
+    private  String druglicense;
+    private String gistin;
+    private String category;
     private String logo;
-    private  String bannerUrl;
-    private String position;
-    private String createdBy;
+    private String lat;
+    private String lng;
+    private String address;
 }

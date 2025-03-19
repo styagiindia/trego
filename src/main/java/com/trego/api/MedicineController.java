@@ -1,13 +1,10 @@
 package com.trego.api;
 
-import com.trego.beans.Medicine;
 import com.trego.dto.MedicineDTO;
-import com.trego.beans.MedicineWithStockAndVendorDTO;
+import com.trego.dao.entity.MedicineWithStockAndVendorDTO;
 import com.trego.service.IMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;

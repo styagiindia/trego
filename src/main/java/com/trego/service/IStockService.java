@@ -1,8 +1,6 @@
 package com.trego.service;
 
-import com.trego.beans.Medicine;
-import com.trego.beans.Stock;
-import org.springframework.data.domain.Page;
+import com.trego.dao.entity.Stock;
 
 import java.util.List;
 

@@ -1,8 +1,7 @@
 package com.trego.service;
 
-import com.trego.beans.Medicine;
 import com.trego.dto.MedicineDTO;
-import com.trego.beans.MedicineWithStockAndVendorDTO;
+import com.trego.dao.entity.MedicineWithStockAndVendorDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
