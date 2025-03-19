@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/main/java/com/trego/dto/MedicineWithStockAndVendorDTO.java
 package com.trego.dto;
-========
-package com.trego.dao.entity;
->>>>>>>> dev:src/main/java/com/trego/dao/entity/MedicineWithStockAndVendorDTO.java
 
 import com.trego.dao.entity.Stock;
 import lombok.Data;
