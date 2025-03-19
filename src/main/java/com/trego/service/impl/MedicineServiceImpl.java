@@ -64,11 +64,16 @@ public class MedicineServiceImpl implements IMedicineService {
     }
 
     @Override
-    public Page<MedicineWithStockAndVendorDTO> searchMedicines(String searchText, int page, int size) {
+    public Page<MedicineWithStockAndVendorDTO> searchMedicines(String searchText, long vendorId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         MedicineWithStockAndVendorDTO medicineWithStockAndVendorDTO = new MedicineWithStockAndVendorDTO();
+        Page<Medicine> medicines = null;
+        if(vendorId != 0 ){
+            medicines = medicineRepository.findByNameWithVendorId(searchText, vendorId, pageable);
 
-        Page<Medicine> medicines = medicineRepository.findByNameContainingIgnoreCaseOrNameIgnoreCase(searchText, "", pageable);
+        }else {
+             medicines = medicineRepository.findByNameContainingIgnoreCaseOrNameIgnoreCase(searchText, "", pageable);
+        }
         return convertResponse(medicines);
 
     }
@@ -76,9 +81,9 @@ public class MedicineServiceImpl implements IMedicineService {
     private Page<MedicineWithStockAndVendorDTO> convertResponse(Page<Medicine> medicines) {
         List<Medicine> tempMedicines = medicines.getContent();
         Page<MedicineWithStockAndVendorDTO> medicineDTOs = medicines.map(medicine -> {
-            List<Stock> stocks = stockRepository.findByMedicineId(medicine.getId());
+          //  List<Stock> stocks = stockRepository.findByMedicineId(medicine.getId());
             MedicineWithStockAndVendorDTO medicineWithStockAndVendorDTO = populateMedicineWithStockVendor(medicine);
-            medicineWithStockAndVendorDTO.setStocks(stocks);
+            medicineWithStockAndVendorDTO.setStocks(medicine.getStocks());
             return medicineWithStockAndVendorDTO;
         });
         return medicineDTOs;
