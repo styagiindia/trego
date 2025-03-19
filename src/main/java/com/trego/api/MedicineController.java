@@ -1,7 +1,7 @@
 package com.trego.api;
 
 import com.trego.dto.MedicineDTO;
-import com.trego.dto.MedicineWithStockAndVendorDTO;
+import com.trego.dao.entity.MedicineWithStockAndVendorDTO;
 import com.trego.service.IMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,10 +1,11 @@
 package com.trego.dao.entity;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Entity(name = "vendors")
@@ -22,8 +23,4 @@ public class Vendor {
     private String lat;
     private String lng;
     private String address;
-
-
-    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Stock> stocks; // One-to-many relationship with Stock
 }
