@@ -97,7 +97,7 @@ public class MedicineServiceImpl implements IMedicineService {
         medicineWithStockAndVendorDTO.setMedicineType(medicine.getMedicineType());
         medicineWithStockAndVendorDTO.setManufacturer(medicine.getManufacturer());
         medicineWithStockAndVendorDTO.setSaltComposition(medicine.getSaltComposition());
-        medicineWithStockAndVendorDTO.setPhoto1(Constants.LOGO_BASE_URL  + medicine.getPhoto1());
+        medicineWithStockAndVendorDTO.setPhoto1(Constants.LOGO_BASE_URL + Constants.MEDICINES_BASE_URL  + medicine.getPhoto1());
         medicineWithStockAndVendorDTO.setUseOf(medicine.getUseOf());
         SubstituteDTO substituteDTO =  new SubstituteDTO();
         substituteDTO.setText("60% Low Price Substitute Avaliable ");
