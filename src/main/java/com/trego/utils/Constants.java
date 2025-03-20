@@ -1,7 +1,7 @@
 package com.trego.utils;
 
 public class Constants {
-    public static  final String LOGO_BASE_URL = "http://www.yogicvidya.com";
+    public static  final String LOGO_BASE_URL = "https://yogicvidya.com";
 
     public static  final String MEDICINES_BASE_URL = "/images/medicines/";
     public static  final String CATEGORIES_MEDICINE_BASE_URL = "/images/cetegories/medicines/";
