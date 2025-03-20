@@ -20,13 +20,20 @@ public class AddressServiceImpl implements IAddressService {
     private AddressRepository addressRepository;
 
     @Override
-    public Address createAddress(AddressDTO addressDTO) {
+    public AddressDTO createAddress(AddressDTO addressDTO) {
+
         Address address = new Address();
         address.setAddress(addressDTO.getAddress());
+        address.setCity(addressDTO.getCity());
+        address.setLandmark(addressDTO.getLandmark());
+        address.setPincode(addressDTO.getPincode());
+        address.setLat(addressDTO.getLat());
+        address.setLng(addressDTO.getLng());
         User user  = new User();
         user.setId(addressDTO.getUserId());
         address.setUser(user);
-        return addressRepository.save(address);
+        addressDTO.setId(addressRepository.save(address).getId());
+        return addressDTO;
     }
 
 

@@ -19,8 +19,8 @@ public class AddressController {
     private IAddressService addressService;
 
     @PostMapping
-    public ResponseEntity<Address> createAddress(@RequestBody AddressDTO addressDTO) {
-        Address newAddress = addressService.createAddress(addressDTO);
+    public ResponseEntity<AddressDTO> createAddress(@RequestBody AddressDTO addressDTO) {
+        AddressDTO newAddress = addressService.createAddress(addressDTO);
         return new ResponseEntity<>(newAddress, HttpStatus.CREATED);
     }
 

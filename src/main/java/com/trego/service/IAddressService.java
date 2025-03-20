@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IAddressService {
 
 
-    Address createAddress(AddressDTO addressDTO);
+    AddressDTO createAddress(AddressDTO addressDTO);
 
     Optional<Address> getAddressById(Long id);
 
