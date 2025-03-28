@@ -24,4 +24,12 @@ public class MedicineDTO {
     private int discount;
     private int qty;
     private String expiryDate;
+
+
+    private Integer quantity;
+    private Double actualPrice;
+    private String useFor;
+    private String image;
+    private String strip;
+    private Double offeredPrice;
 }
