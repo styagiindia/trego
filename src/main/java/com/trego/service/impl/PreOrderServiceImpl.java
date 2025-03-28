@@ -36,4 +36,18 @@ public class PreOrderServiceImpl implements IPreOrderService {
         preOrderResponseDTO.setOrderId(preOrder.getId());
         return  preOrderResponseDTO;
     }
+
+    @Override
+    public PreOrderDTO getOrdersByUserId(Long userId) {
+        Gson gson = new Gson();
+        PreOrderDTO preOrderResponseDTO = new PreOrderDTO();
+        Optional<PreOrder> preOrder = Optional.ofNullable(preOrderRepository.findByUserId(userId));
+        if (preOrder.isPresent()) {
+                PreOrder tempPreOrder = preOrder.get();
+                preOrderResponseDTO = gson.fromJson(tempPreOrder.getPayload(), PreOrderDTO.class);
+                preOrderResponseDTO.setOrderId(tempPreOrder.getId());
+
+        }
+        return  preOrderResponseDTO;
+    }
 }
