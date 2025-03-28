@@ -15,7 +15,6 @@ public class MedicineDTO {
     private String medicineType;
     private String description;
     private String photo1;
-
     private String useOf;
     private String packing;
     private List<Stock> offLineStocks;
@@ -24,8 +23,6 @@ public class MedicineDTO {
     private int discount;
     private int qty;
     private String expiryDate;
-
-
     private Integer quantity;
     private Double actualPrice;
     private String useFor;

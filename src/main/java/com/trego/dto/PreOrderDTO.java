@@ -5,10 +5,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PreOrderRequestDTO {
+public class PreOrderDTO {
 
     private long userId;
-    private AddressDTO address;
+    private long orderId;
+    private long addressId;
     private Double totalCartValue;
     private Double amountToPay;
     private Double discount;
