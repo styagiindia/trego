@@ -6,7 +6,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CartDTO {
-    private Long vendorId;
-    private List<MedicinePreOrderDTO> medicine;
+public class MedicinePreOrderDTO {
+
+    private long id;
+    private int mrp;
+    private int quantity;
 }

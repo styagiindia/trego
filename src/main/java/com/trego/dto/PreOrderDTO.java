@@ -10,9 +10,9 @@ public class PreOrderDTO {
     private long userId;
     private long orderId;
     private long addressId;
-    private Double totalCartValue;
-    private Double amountToPay;
-    private Double discount;
+    private double totalCartValue;
+    private double amountToPay;
+    private double discount;
     private List<CartDTO> carts;
 
 }
