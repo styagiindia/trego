@@ -60,6 +60,7 @@ public class MedicineServiceImpl implements IMedicineService {
         List<Stock> stocks   = stockRepository.findByMedicineId(medicine.getId());
         medicineDTO.setOffLineStocks(stocks);
         medicineDTO.setOnLineStocks(new ArrayList<>());
+
         return  medicineDTO;
     }
 

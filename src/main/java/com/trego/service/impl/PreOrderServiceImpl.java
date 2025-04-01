@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -85,16 +86,15 @@ public class PreOrderServiceImpl implements IPreOrderService {
     private void populateCartResponse(PreOrderResponseDTO preOrderResponseDTO) {
         List<CartResponseDTO> cartDTOs = preOrderResponseDTO.getCarts().stream().map(cart -> {
 
-          List<MedicineDTO> medicines = cart.getMedicine().stream()
-                  .map(medicine -> {
-                      Optional<Stock> optionalStock = stockRepository.findByMedicineIdAndVendorId(medicine.getId(), cart.getVendorId());
-                      MedicineDTO medicineDTO = null;
-                      if (optionalStock.isPresent()) {
-                          return populateMedicalDTO(cart, optionalStock.get(), medicineDTO);
-                      }
-                      return medicineDTO;
-                  })
-                  .collect(Collectors.toList());
+            List<MedicineDTO> medicines = cart.getMedicine().stream()
+                    .map(medicine -> {
+                        Optional<Stock> optionalStock = stockRepository.findByMedicineIdAndVendorId(medicine.getId(), cart.getVendorId());
+                        return optionalStock.map(stock -> populateMedicalDTO(medicine, stock)).orElse(null);
+                    })
+                    .filter(Objects::nonNull) // Filters out null values from the stream
+                    .collect(Collectors.toList());
+
+
           cart.setMedicine(medicines);
 
 
@@ -121,9 +121,9 @@ public class PreOrderServiceImpl implements IPreOrderService {
         preOrderResponseDTO.setCarts(cartDTOs);
     }
 
-    private MedicineDTO populateMedicalDTO(CartResponseDTO cart, Stock stock, MedicineDTO medicineDTO) {
-        medicineDTO = new MedicineDTO();
-        Medicine tempMedicine = medicineRepository.findById(cart.getVendorId()).orElse(null);
+    private MedicineDTO populateMedicalDTO(MedicineDTO medicineDTO, Stock stock) {
+
+        Medicine tempMedicine = medicineRepository.findById(stock.getVendor().getId()).orElse(null);
         medicineDTO.setId(tempMedicine.getId());
         medicineDTO.setMrp(stock.getMrp());
         medicineDTO.setId(tempMedicine.getId());
@@ -136,7 +136,6 @@ public class PreOrderServiceImpl implements IPreOrderService {
         medicineDTO.setSaltComposition(tempMedicine.getSaltComposition());
         medicineDTO.setPhoto1(Constants.LOGO_BASE_URL  + Constants.MEDICINES_BASE_URL + tempMedicine.getPhoto1());
         medicineDTO.setDiscount(stock.getDiscount());
-        medicineDTO.setQty(stock.getQty());
         medicineDTO.setMrp(stock.getMrp());
         medicineDTO.setActualPrice(stock.getMrp());
         medicineDTO.setExpiryDate(stock.getExpiryDate());
