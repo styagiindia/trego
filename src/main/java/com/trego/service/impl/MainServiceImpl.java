@@ -97,7 +97,7 @@ public class MainServiceImpl implements IMainService {
             medicineDTO.setSaltComposition(medicine.getSaltComposition());
             medicineDTO.setPhoto1(Constants.LOGO_BASE_URL + Constants.MEDICINES_BASE_URL + medicine.getPhoto1());
             medicineDTO.setUseOf(medicine.getUseOf());
-            medicineDTO.setPacking(medicine.getPacking());
+            medicineDTO.setStrip(medicine.getPacking());
             medicineDTO.setDiscount(stock.getDiscount());
             medicineDTO.setQty(stock.getQty());
             medicineDTO.setMrp(stock.getMrp());

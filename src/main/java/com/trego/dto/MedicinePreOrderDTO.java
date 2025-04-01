@@ -9,6 +9,6 @@ import java.util.List;
 public class MedicinePreOrderDTO {
 
     private long id;
-    private int mrp;
-    private int quantity;
+    private double mrp;
+    private int qty;
 }

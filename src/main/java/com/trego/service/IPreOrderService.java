@@ -1,9 +1,10 @@
 package com.trego.service;
 
 import com.trego.dto.PreOrderDTO;
+import com.trego.dto.response.PreOrderResponseDTO;
 
 public interface IPreOrderService {
-    public PreOrderDTO savePreOrder(PreOrderDTO preOrder);
+    public PreOrderResponseDTO savePreOrder(PreOrderDTO preOrder);
 
-    PreOrderDTO getOrdersByUserId(Long userId);
+    PreOrderResponseDTO getOrdersByUserId(Long userId);
 }

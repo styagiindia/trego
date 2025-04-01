@@ -13,8 +13,8 @@ public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int mrp;
-    private int discount;
+    private double mrp;
+    private double discount;
     private int qty;
 
     private String expiryDate;
