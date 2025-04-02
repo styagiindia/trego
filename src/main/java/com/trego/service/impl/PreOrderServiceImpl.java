@@ -123,7 +123,7 @@ public class PreOrderServiceImpl implements IPreOrderService {
 
     private MedicineDTO populateMedicalDTO(MedicineDTO medicineDTO, Stock stock) {
 
-        Medicine tempMedicine = medicineRepository.findById(stock.getVendor().getId()).orElse(null);
+        Medicine tempMedicine = medicineRepository.findById(medicineDTO.getId()).orElse(null);
         medicineDTO.setId(tempMedicine.getId());
         medicineDTO.setMrp(stock.getMrp());
         medicineDTO.setId(tempMedicine.getId());
