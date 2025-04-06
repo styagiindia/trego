@@ -41,8 +41,17 @@ public class MainServiceImpl implements IMainService {
         MainDTO mainDTO = new MainDTO();
 
         List<Banner> topBanners = bannerRepository.findByPosition("top");
+        // Append base path using Java 8 Stream API
+        topBanners.stream()
+                .forEach(banner -> banner.setLogo(Constants.LOGO_BASE_URL + Constants.TOP_BASE_URL + banner.getLogo()));
+
+
         mainDTO.setTopBanners(topBanners);
         List<Banner> middleBanners = bannerRepository.findByPosition("middle");
+        // Append base path using Java 8 Stream API
+        middleBanners.stream()
+                .forEach(banner -> banner.setLogo(Constants.LOGO_BASE_URL + Constants.MIDDLE_BASE_URL + banner.getLogo()));
+
         mainDTO.setMiddleBanners(middleBanners);
 
         List<VendorDTO> topOfflineVendors = new ArrayList<>();

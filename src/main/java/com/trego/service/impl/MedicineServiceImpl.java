@@ -55,7 +55,7 @@ public class MedicineServiceImpl implements IMedicineService {
         medicineDTO.setSaltComposition(medicine.getSaltComposition());
         medicineDTO.setManufacturer(medicine.getManufacturer());
         medicineDTO.setDescription(medicine.getDescription());
-        medicineDTO.setPhoto1(Constants.LOGO_BASE_URL Constants.MEDICINES_BASE_URL  + medicine.getPhoto1());
+        medicineDTO.setPhoto1(Constants.LOGO_BASE_URL + Constants.MEDICINES_BASE_URL  + medicine.getPhoto1());
 
         List<Stock> stocks   = stockRepository.findByMedicineId(medicine.getId());
         medicineDTO.setOffLineStocks(stocks);
