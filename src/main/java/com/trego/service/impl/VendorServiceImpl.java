@@ -13,6 +13,11 @@ import com.trego.service.IVendorService;
 import com.trego.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +55,7 @@ public class VendorServiceImpl implements IVendorService {
     }
 
     @Override
-    public VendorDTO getVendorByIdOrMedicine(Long id,  String searchText) {
+    public VendorDTO getVendorByIdOrMedicine(Long id,  String searchText, int page, int size) {
         VendorDTO vendorDTO = new VendorDTO();
         Vendor vendor = vendorRepository.findById(id).orElse(null);
         vendorDTO.setId(vendor.getId());
@@ -67,7 +72,16 @@ public class VendorServiceImpl implements IVendorService {
         vendorDTO.setLng(vendor.getLng());
 
         List<StockDTO> stockDTOS = new ArrayList<>();
-        List<Stock> stocks   = stockRepository.findByVendorId(vendor.getId());
+
+        // Create a Pageable object
+        Pageable pageable = PageRequest.of(page, size);
+        // Fetch paginated stocks
+        Page<Stock> stocksPage = stockRepository.findByVendorId(vendor.getId(), pageable);
+        // Get the list of stocks from the page
+        List<Stock> stocks = stocksPage.getContent();
+
+
+        //List<Stock> stocks   = stockRepository.findByVendorId(vendor.getId());
         List<MedicineDTO> medicineDTOList = new ArrayList<>();
         for(Stock stock : stocks){
             Medicine medicine = stock.getMedicine();
