@@ -7,5 +7,5 @@ import java.util.List;
 public interface IVendorService {
     List<VendorDTO> findVendorsByType(String type);
 
-    VendorDTO getVendorByIdOrMedicine(Long id, String searchText);
+    VendorDTO getVendorByIdOrMedicine(Long id, String searchText , int page, int size);
 }

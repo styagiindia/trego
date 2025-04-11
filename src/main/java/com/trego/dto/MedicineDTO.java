@@ -13,9 +13,30 @@ public class MedicineDTO {
     private String manufacturer;
     private String saltComposition;
     private String medicineType;
+    private String introduction;
     private String description;
-    private String photo1;
+
+    private String howItWorks;
+    private String safetyAdvise;
+    private String ifMiss;
     private String useOf;
+    private String prescriptionRequired;
+    private String storage;
+
+
+    private String commonSideEffect;
+    private String alcoholInteraction;
+    private String pregnancyInteraction;
+    private String lactationInteraction;
+    private String drivingInteraction;
+    private String kidneyInteraction;
+    private String liverInteraction;
+    private String manufacturerAddress;
+    private String countryOfOrigin;
+    private String questionAnswers;
+    private String photo1;
+
+
     private List<Stock> offLineStocks;
     private List<Stock> onLineStocks;
     private double mrp;

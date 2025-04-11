@@ -48,15 +48,34 @@ public class MedicineServiceImpl implements IMedicineService {
 
         MedicineDTO medicineDTO = new MedicineDTO();
         medicineDTO.setId(medicine.getId());
-        medicineDTO.setMedicineType(medicine.getMedicineType());
+
         medicineDTO.setName(medicine.getName());
+        medicineDTO.setManufacturer(medicine.getManufacturer());
+        medicineDTO.setSaltComposition(medicine.getSaltComposition());
+        medicineDTO.setMedicineType(medicine.getMedicineType());
+
+        medicineDTO.setIntroduction(medicine.getIntroduction());
+        medicineDTO.setDescription(medicine.getDescription());
+       medicineDTO.setHowItWorks(medicine.getHowItWorks());
+       medicineDTO.setSafetyAdvise(medicine.getSafetyAdvise());
+       medicineDTO.setIfMiss(medicine.getIfMiss());
         medicineDTO.setUseOf(medicine.getUseOf());
         medicineDTO.setStrip(medicine.getPacking());
-        medicineDTO.setSaltComposition(medicine.getSaltComposition());
-        medicineDTO.setManufacturer(medicine.getManufacturer());
-        medicineDTO.setDescription(medicine.getDescription());
-        medicineDTO.setPhoto1(Constants.LOGO_BASE_URL + Constants.MEDICINES_BASE_URL  + medicine.getPhoto1());
+        medicineDTO.setPrescriptionRequired(medicine.getPrescriptionRequired());
+        medicineDTO.setUseOf(medicine.getUseOf());
 
+
+        medicineDTO.setCommonSideEffect(medicine.getCommonSideEffect());
+        medicineDTO.setAlcoholInteraction(medicine.getAlcoholInteraction());
+        medicineDTO.setPregnancyInteraction(medicine.getPregnancyInteraction());
+        medicineDTO.setLactationInteraction(medicine.getLactationInteraction());
+        medicineDTO.setDrivingInteraction(medicine.getDrivingInteraction());
+        medicineDTO.setKidneyInteraction(medicine.getKidneyInteraction());
+       medicineDTO.setLiverInteraction(medicine.getLiverInteraction());
+        medicineDTO.setManufacturer(medicine.getManufacturer());
+        medicineDTO.setCountryOfOrigin(medicine.getCountryOfOrigin());
+        medicineDTO.setQuestionAnswers(medicine.getQuestionAnswers());
+        medicineDTO.setPhoto1(Constants.LOGO_BASE_URL + Constants.MEDICINES_BASE_URL  + medicine.getPhoto1());
         List<Stock> stocks   = stockRepository.findByMedicineId(medicine.getId());
         medicineDTO.setOffLineStocks(stocks);
         medicineDTO.setOnLineStocks(new ArrayList<>());
