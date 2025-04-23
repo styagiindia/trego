@@ -19,20 +19,24 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @Column(nullable = true)
-    private Integer medicineId;
+    @ManyToOne
+    @JoinColumn(name = "medicine_id", nullable = false)
+    private Medicine medicine;
+
+/*    @Column(nullable = true)
+    private Integer medicineId;*/
 
     @Column(nullable = true)
     private Integer qty;
 
     @Column(nullable = true)
-    private BigDecimal mrp;
+    private double mrp;
 
     @Column(nullable = true)
-    private BigDecimal sellingPrice;
+    private double sellingPrice;
 
     @Column(nullable = true)
-    private BigDecimal amount;
+    private double amount;
 
     @Column(nullable = true)
     private String thumbnail;

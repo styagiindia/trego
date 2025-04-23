@@ -11,10 +11,11 @@ import java.util.List;
 @Data
 public class CartResponseDTO {
     private Long vendorId;
+    private  long orderId;
     private String name;
     private String licence;
     private String gstNumber;
-    private String address;
+   // private String address;
     private String logo;
     private String lat;
     private String lng;

@@ -16,43 +16,57 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+/*
 
     @Column(nullable = false)
-    private BigDecimal totalAmount;
+    private Long userId;
+*/
+
+/*    @Column(nullable = false)
+    private Long vendorId;*/
+
+
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor;
 
     @Column(nullable = false)
-    private BigDecimal discount;
+    private double totalAmount;
+
+    @Column(nullable = false)
+    private double discount;
 
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String pincode;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String lanmark;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String city;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String name;
 
-    @Column(nullable = false)
-    private String mobile;
+    @Column(nullable = true)
+    private long mobile;
 
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String paymentStatus;
 
-    @Column(nullable = false)
+    @Column
     private String paymentMethod;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String orderStatus;
 
     @Column(nullable = true)

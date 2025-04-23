@@ -108,7 +108,7 @@ public class PreOrderServiceImpl implements IPreOrderService {
           }
           cart.setGstNumber(vendor.getGistin());
           cart.setLicence(vendor.getDruglicense());
-          cart.setAddress(vendor.getAddress());
+         // cart.setAddress(vendor.getAddress());
           cart.setLat(vendor.getLat());
           cart.setLng(vendor.getLng());
 
