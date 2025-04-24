@@ -10,6 +10,5 @@ import java.util.List;
 
 public interface IOrderService {
 
-    public Order placeOrder(Order order, List<OrderItem> orderItems);
     public OrderResponseDTO placeOrder(OrderRequestDTO orderRequest) throws Exception;
 }

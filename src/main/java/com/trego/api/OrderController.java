@@ -21,8 +21,14 @@ public class OrderController {
         Order placedOrder = orderService.placeOrder(orderRequest.getOrder(), orderRequest.getOrderItems());
         return ResponseEntity.ok(placedOrder);
     }*/
-    @PostMapping
+   /* @PostMapping
     public OrderResponseDTO getOrdersByUserId(@RequestBody OrderRequestDTO orderRequest) throws Exception {
+
+        return orderService.placeOrder(orderRequest);
+    }*/
+
+    @PostMapping
+    public OrderResponseDTO placeOrder(@RequestBody OrderRequestDTO orderRequest) throws Exception {
 
         return orderService.placeOrder(orderRequest);
     }

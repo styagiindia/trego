@@ -7,18 +7,9 @@ import java.util.List;
 
 @Data
 public class OrderRequestDTO {
-  //  private Order order;
-   // private List<OrderItem> orderItems;
-
-    // Getters and Setters
-//    private long orderId;
-    //  private long addressId;
 
 
     private long userId;
-    AddressDTO address;
-    private double totalCartValue;
-    private double amountToPay;
-    private double discount;
-    private List<CartResponseDTO> carts;
+    private long addressId;
+    private long preOrderId;
 }
