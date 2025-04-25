@@ -10,26 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/orders")
 public class OrderController {
 
     @Autowired
     private IOrderService orderService;
-/*
-    @PostMapping
-    public ResponseEntity<OrderResponseDTO> placeOrder(@RequestBody OrderRequestDTO orderRequest) {
-        Order placedOrder = orderService.placeOrder(orderRequest.getOrder(), orderRequest.getOrderItems());
-        return ResponseEntity.ok(placedOrder);
-    }*/
-   /* @PostMapping
-    public OrderResponseDTO getOrdersByUserId(@RequestBody OrderRequestDTO orderRequest) throws Exception {
-
-        return orderService.placeOrder(orderRequest);
-    }*/
 
     @PostMapping
     public OrderResponseDTO placeOrder(@RequestBody OrderRequestDTO orderRequest) throws Exception {
-
         return orderService.placeOrder(orderRequest);
     }
 }

@@ -18,6 +18,8 @@ import com.trego.dto.response.PreOrderResponseDTO;
 import com.trego.service.IPreOrderService;
 import com.trego.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,10 +51,13 @@ public class PreOrderServiceImpl implements IPreOrderService {
         calculateTotalCartValue(preOrderRequest);
         calculateAmountToPay(preOrderRequest);
 
+
+
         Gson gson = new Gson();
-        PreOrder preOrder = preOrderRepository.findByUserId(preOrderRequest.getUserId());
+        PreOrder preOrder = preOrderRepository.findByUserIdAndPaymentStatus(preOrderRequest.getUserId(), "unpaid");
         if(preOrder == null){
             preOrder = new PreOrder();
+            preOrder.setPaymentStatus("unpaid");
             preOrder.setUserId(preOrderRequest.getUserId());
             preOrder.setCreatedBy("SYSTEM");
             preOrder.setPayload(gson.toJson(preOrderRequest));

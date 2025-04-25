@@ -19,15 +19,6 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-/*
-
-    @Column(nullable = false)
-    private Long userId;
-*/
-
-/*    @Column(nullable = false)
-    private Long vendorId;*/
-
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
@@ -74,6 +65,10 @@ public class Order {
 
     @Column(nullable = true)
     private LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "pre_order_id")
+    private PreOrder preOrder;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;

@@ -3,8 +3,11 @@ package com.trego.api;
 import com.trego.dto.MedicineDTO;
 import com.trego.dto.PreOrderDTO;
 import com.trego.dto.response.PreOrderResponseDTO;
+import com.trego.exception.InvalidAmountException;
 import com.trego.service.IPreOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +19,13 @@ public class PreOrderController {
 
     @PostMapping
     public PreOrderResponseDTO createPreOrder(@RequestBody PreOrderDTO preOrder) {
-        return preOrderService.savePreOrder(preOrder);
+
+        PreOrderResponseDTO  preOrderResponseDTO = preOrderService.savePreOrder(preOrder);
+
+        if(preOrderResponseDTO.getAmountToPay() == 0.0){
+            throw new InvalidAmountException("Amount to pay must be greater than zero.");
+        }
+        return preOrderResponseDTO;
     }
 
     @GetMapping("/user/{userId}")

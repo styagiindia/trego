@@ -19,6 +19,16 @@ public class PreOrder {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String payload;
 
+    @Column(nullable = true, name = "razorpay_order_id")
+    private String razorpayOrderId;
+
+
+    @Column(nullable = true, name = "total_pay_amount")
+    private double totalPayAmount;
+
+    @Column(name = "payment_status", nullable = true)
+    private String paymentStatus;
+
     @Column(name = "created_by", nullable = false)
     private String createdBy;
 

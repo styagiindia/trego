@@ -14,6 +14,7 @@ import com.trego.dto.response.OrderResponseDTO;
 import com.trego.dto.response.PreOrderResponseDTO;
 import com.trego.service.IOrderService;
 import com.trego.utils.Constants;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,20 +73,28 @@ public class OrderServiceImpl implements IOrderService {
         preOrderResponseDTO.setOrderId(preOrder.getId());
         populateCartResponse(preOrderResponseDTO);
 
+        String razorpayOrderId = null;
+        if(StringUtils.isEmpty(preOrder.getRazorpayOrderId()) || !(preOrderResponseDTO.getAmountToPay()> 0 && Double.compare(preOrderResponseDTO.getAmountToPay(), preOrder.getTotalPayAmount()) == 0)){
+            razorpayOrderId = createRazorPayOrder(orderRequest, preOrderResponseDTO);
+            preOrder.setRazorpayOrderId(razorpayOrderId);
+            preOrder.setTotalPayAmount(preOrderResponseDTO.getAmountToPay());
+            preOrder.setPaymentStatus("unpaid");
+        }else{
+            razorpayOrderId = preOrder.getRazorpayOrderId();
+        }
 
         preOrderResponseDTO.getCarts().forEach(cart -> {
-
             Order order = populateOrder(preOrderResponseDTO);
             Vendor vendor = new Vendor();
             vendor.setId(cart.getVendorId());
             order.setVendor(vendor);
+            order.setPreOrder(preOrder);
             // Save the order
             Order savedOrder = orderRepository.save(order);
             cart.setOrderId(savedOrder.getId());
             List<OrderItem> orderItems = cart.getMedicine().stream()
                     .map(medicine -> {
                         OrderItem item = new OrderItem();
-
                         Medicine med = new Medicine();
                         med.setId(medicine.getId());
                         item.setMedicine(med);
@@ -99,10 +108,12 @@ public class OrderServiceImpl implements IOrderService {
             // Save all order items in one go
             orderItemRepository.saveAll(orderItems);
         });
-        String razorpayOrderId = createRazorPayOrder(orderRequest, preOrderResponseDTO);
+
+        preOrderRepository.save(preOrder);
+
         orderResponseDTO.setRazorpayOrderId(razorpayOrderId);
         orderResponseDTO.setAmountToPay(preOrderResponseDTO.getAmountToPay());
-      //  orderResponseDTO.setCarts(preOrderResponseDTO.getCarts());
+
         return orderResponseDTO;
     }
 
