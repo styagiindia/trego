@@ -23,6 +23,13 @@ public class Address {
     private Double lat;
     private Double lng;
 
+    @Column(name = "mobile_no")
+    private String mobileNo;
+    private String name;
+
+    @Column(name = "address_type")
+    private String addressType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")  // Foreign key column referencing User
     private User user;  // Many-to-one relationship with User
@@ -43,6 +50,11 @@ public class Address {
                 ", pincode='" + pincode + '\'' +
                 ", lat=" + lat +
                 ", lng=" + lng +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", name='" + name + '\'' +
+                ", addressType='" + addressType + '\'' +
+                ", user=" + user +
                 '}';
     }
+
 }

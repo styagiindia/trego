@@ -11,12 +11,15 @@ public class AddressDTO {
     private String city;
     private String landmark;
     private String pincode;
+    private String mobileNo;
+    private String name;
+    private String addressType;
     private Double lat;
     private Double lng;
     private long userId;
 
 
-    public AddressDTO(Long id, String address, String city, String landmark, String pincode, Double lat, Double lng, long userId) {
+    public AddressDTO(Long id, String address, String city, String landmark, String pincode, Double lat, Double lng, long userId, String mobileNo, String name, String addressType) {
         this.id = id;
         this.address = address;
         this.city = city;
@@ -25,5 +28,8 @@ public class AddressDTO {
         this.lat = lat;
         this.lng = lng;
         this.userId = userId;
+        this.mobileNo = mobileNo;
+        this.name = name;
+        this.addressType = addressType;
     }
 }
