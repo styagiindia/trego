@@ -1,6 +1,7 @@
 package com.trego.dao.entity;
 
 
+import com.trego.enums.AddressType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,8 +28,12 @@ public class Address {
     private String mobileNo;
     private String name;
 
-    @Column(name = "address_type")
-    private String addressType;
+    @Column(nullable = true, name = "address_type")
+    private int addressType;
+
+
+/*    @Column(name = "address_type")
+    private String addressType;*/
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")  // Foreign key column referencing User

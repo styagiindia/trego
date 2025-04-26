@@ -4,6 +4,7 @@ import com.trego.dao.entity.Address;
 import com.trego.dao.entity.User;
 import com.trego.dao.impl.AddressRepository;
 import com.trego.dto.AddressDTO;
+import com.trego.enums.AddressType;
 import com.trego.service.IAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class AddressServiceImpl implements IAddressService {
         address.setPincode(addressDTO.getPincode());
         address.setLat(addressDTO.getLat());
         address.setLng(addressDTO.getLng());
+        address.setMobileNo(addressDTO.getMobileNo());
+        address.setName(addressDTO.getName());
+        address.setAddressType(addressDTO.getAddressType());
         User user  = new User();
         user.setId(addressDTO.getUserId());
         address.setUser(user);

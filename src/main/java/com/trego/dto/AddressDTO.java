@@ -13,13 +13,13 @@ public class AddressDTO {
     private String pincode;
     private String mobileNo;
     private String name;
-    private String addressType;
+    private int addressType;
     private Double lat;
     private Double lng;
     private long userId;
 
 
-    public AddressDTO(Long id, String address, String city, String landmark, String pincode, Double lat, Double lng, long userId, String mobileNo, String name, String addressType) {
+    public AddressDTO(Long id, String address, String city, String landmark, String pincode, Double lat, Double lng, long userId, String mobileNo, String name, int addressType) {
         this.id = id;
         this.address = address;
         this.city = city;
