@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.trego.dao.entity.*;
 import com.trego.dao.impl.*;
-import com.trego.dto.CartDTO;
-import com.trego.dto.MedicineDTO;
-import com.trego.dto.OrderRequestDTO;
-import com.trego.dto.PreOrderDTO;
+import com.trego.dto.*;
 import com.trego.dto.response.CartResponseDTO;
 import com.trego.dto.response.OrderResponseDTO;
+import com.trego.dto.response.OrderValidateResponseDTO;
 import com.trego.dto.response.PreOrderResponseDTO;
 import com.trego.service.IOrderService;
 import com.trego.utils.Constants;
@@ -23,10 +21,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import com.google.gson.JsonObject;
 
@@ -115,6 +110,81 @@ public class OrderServiceImpl implements IOrderService {
         orderResponseDTO.setAmountToPay(preOrderResponseDTO.getAmountToPay());
 
         return orderResponseDTO;
+    }
+
+    @Override
+    public OrderValidateResponseDTO validateOrder(OrderValidateRequestDTO orderValidateRequestDTO) throws Exception {
+        OrderValidateResponseDTO validateResponseDTO = new OrderValidateResponseDTO();
+        boolean isValidate = verifyRazorPayOrder(orderValidateRequestDTO);
+        if(isValidate){
+            PreOrder preOrder = preOrderRepository.findById(orderValidateRequestDTO.getOrderId()).get();
+            preOrder.setPaymentStatus("paid");
+            preOrderRepository.save(preOrder);
+        }
+        validateResponseDTO.setValidate(isValidate);
+        validateResponseDTO.setRazorpayOrderId(orderValidateRequestDTO.getRazorpayOrderId());
+        validateResponseDTO.setRazorpayPaymentId(orderValidateRequestDTO.getRazorpayPaymentId());
+        return validateResponseDTO;
+    }
+
+    public boolean verifyRazorPayOrder(OrderValidateRequestDTO orderValidateRequestDTO) throws Exception {
+        String keyId = "rzp_test_oZBGm1luIG1Rpl"; // Replace with actual key
+        String keySecret = "S0Pxnueo7AdCYS2HFIa7LXK6"; // Replace with actual key
+        String credentials = keyId + ":" + keySecret;
+        String encodedAuth = Base64.getEncoder().encodeToString(credentials.getBytes(StandardCharsets.UTF_8));
+        // API URL
+        String url = "https://api.razorpay.com/v1/orders/"+orderValidateRequestDTO.getRazorpayOrderId()+"/payments";
+
+        boolean isValidate = false;
+        // Create HTTP Client
+        HttpClient client = HttpClient.newHttpClient();
+        // Create HTTP Request
+        // Create HTTP Request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Basic " + encodedAuth)
+                .GET() // Change method to GET
+                .build();
+
+        // Send Request
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        // Print Response
+        System.out.println("verifyRazorPayOrder Response Code: " + response.statusCode());
+        System.out.println("verifyRazorPayOrder Response Body: " + response.body());
+        String orderId = null;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(response.body());
+
+            // Access the "items" array
+            JsonNode itemsNode = rootNode.get("items");
+            if (itemsNode == null || !itemsNode.isArray()) {
+                System.out.println("No 'items' field found or it's not an array.");
+                return false;
+            }
+
+            // Iterate through the "items" array
+            Iterator<JsonNode> elements = itemsNode.elements();
+            while (elements.hasNext()) {
+                JsonNode itemNode = elements.next();
+                JsonNode idNode = itemNode.get("id");
+                JsonNode amountNode = itemNode.get("amount");
+
+                // Check if the "id" matches
+                if (idNode != null && orderValidateRequestDTO.getRazorpayPaymentId().equals(idNode.asText()) && orderValidateRequestDTO.getRazorpayAmount().equals(amountNode.asText())) {
+                    System.out.println("Valid 'id' found: " + orderValidateRequestDTO.getRazorpayPaymentId());
+                    isValidate =  true;
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error while parsing JSON or validating 'id': " + e.getMessage());
+
+
+        }
+        return isValidate;
     }
 
 
