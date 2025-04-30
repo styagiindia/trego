@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "preorders")
 @Table(name = "pre_orders")
 public class PreOrder {
     @Id
@@ -21,7 +22,6 @@ public class PreOrder {
 
     @Column(nullable = true, name = "razorpay_order_id")
     private String razorpayOrderId;
-
 
     @Column(nullable = true, name = "total_pay_amount")
     private double totalPayAmount;
@@ -39,6 +39,10 @@ public class PreOrder {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
+
+
+    @OneToMany(mappedBy = "preOrder")
+    private List<Order> orders;  // Related to Stock
 
     // Getters and Setters
 }

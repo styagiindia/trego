@@ -6,14 +6,14 @@ import com.google.gson.Gson;
 import com.trego.dao.entity.*;
 import com.trego.dao.impl.*;
 import com.trego.dto.*;
-import com.trego.dto.response.CartResponseDTO;
-import com.trego.dto.response.OrderResponseDTO;
-import com.trego.dto.response.OrderValidateResponseDTO;
-import com.trego.dto.response.PreOrderResponseDTO;
+import com.trego.dto.response.*;
 import com.trego.service.IOrderService;
 import com.trego.utils.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -126,6 +126,74 @@ public class OrderServiceImpl implements IOrderService {
         validateResponseDTO.setRazorpayPaymentId(orderValidateRequestDTO.getRazorpayPaymentId());
         return validateResponseDTO;
     }
+
+    @Override
+    public Page<OrderResponseDTO> fetchAllOrders(Long userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PreOrder>  preOrdersList =  preOrderRepository.fetchAllOrdersByUserId(userId, pageable);
+        // Map PreOrder entities to OrderResponseDTO
+        Page<OrderResponseDTO> responseDTOPage = preOrdersList.map(preOrder -> {
+            OrderResponseDTO responseDTO = new OrderResponseDTO();
+
+            responseDTO.setUserId(preOrder.getUserId());
+            responseDTO.setRazorpayOrderId(preOrder.getRazorpayOrderId());
+            responseDTO.setAmountToPay(preOrder.getTotalPayAmount());
+            responseDTO.setPaymentStatus(preOrder.getPaymentStatus());
+
+            List<OrderDTO> orderDTO = populateOrders(preOrder);
+            responseDTO.setOrders(orderDTO);
+            return responseDTO;
+        });
+
+        return responseDTOPage;
+
+    }
+
+    private List<OrderDTO> populateOrders(PreOrder preOrder) {
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+// Iterate over orders in PreOrder
+        preOrder.getOrders().forEach(order -> {
+            OrderDTO orderDTO = new OrderDTO();
+
+            // Populate fields of OrderDTO based on Order entity
+            orderDTO.setOrderId(order.getId());
+            orderDTO.setOrderStatus(order.getOrderStatus());
+            orderDTO.setTotalAmount(order.getTotalAmount());
+            orderDTO.setAddress(order.getAddress());
+            orderDTO.setPinCode(order.getPincode());
+
+            VendorDTO vendorDTO = new VendorDTO();
+            vendorDTO.setId(order.getVendor().getId());
+            vendorDTO.setName(order.getVendor().getName());
+            orderDTO.setVendor(vendorDTO);
+
+            // Populate OrderItems list
+            List<OrderItemDTO> orderItemsList = new ArrayList<>();
+            order.getOrderItems().forEach(orderItem -> {
+                OrderItemDTO orderItemDTO = new OrderItemDTO();
+                orderItemDTO.setItemId(orderItem.getId());
+                orderItemDTO.setQty(orderItem.getQty());
+                orderItemDTO.setMrp(orderItem.getMrp());
+               /* MedicineDTO medicineDTO = new MedicineDTO();
+                medicineDTO.setName(orderItem.getMedicine().getName());*/
+
+                Map<String, Object> medicineDetails = new HashMap<>();
+                medicineDetails.put("medicineId" , orderItem.getMedicine().getId());
+                medicineDetails.put("medicineName" , orderItem.getMedicine().getName());
+                orderItemDTO.setMedicine(medicineDetails);
+                orderItemsList.add(orderItemDTO);
+            });
+
+            // Set the populated OrderItems list in OrderDTO
+            orderDTO.setOrderItemsList(orderItemsList);
+
+            // Add the OrderDTO to the main list
+            orderDTOList.add(orderDTO);
+        });
+
+        return orderDTOList;
+    }
+
 
     public boolean verifyRazorPayOrder(OrderValidateRequestDTO orderValidateRequestDTO) throws Exception {
         String keyId = "rzp_test_oZBGm1luIG1Rpl"; // Replace with actual key

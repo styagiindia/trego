@@ -1,5 +1,6 @@
 package com.trego.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -69,6 +70,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "pre_order_id")
     private PreOrder preOrder;
+
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
