@@ -78,6 +78,9 @@ public class OrderServiceImpl implements IOrderService {
             razorpayOrderId = preOrder.getRazorpayOrderId();
         }
 
+        if(preOrderResponseDTO.getAddressId() == 0 ){
+            preOrderResponseDTO.setAddressId(orderRequest.getAddressId());
+        }
         preOrderResponseDTO.getCarts().forEach(cart -> {
             Order order = populateOrder(preOrderResponseDTO);
             Vendor vendor = new Vendor();
@@ -420,6 +423,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     private Order populateOrder(PreOrderResponseDTO orderRequest) {
+
 
         Address address = addressRepository.findById(orderRequest.getAddressId()).get();
         Order order = new Order();
