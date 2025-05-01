@@ -6,6 +6,7 @@ import lombok.Data;
 public class OrderValidateRequestDTO {
 
     private long orderId;
+    private long userId;
     private String razorpayOrderId;
     private String razorpayPaymentId;
     private String razorpaysignature;

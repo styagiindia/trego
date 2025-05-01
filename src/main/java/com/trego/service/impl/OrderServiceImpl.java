@@ -66,7 +66,7 @@ public class OrderServiceImpl implements IOrderService {
         Gson gson = new Gson();
         PreOrderResponseDTO preOrderResponseDTO =  gson.fromJson(preOrder.getPayload(), PreOrderResponseDTO.class);
         preOrderResponseDTO.setOrderId(preOrder.getId());
-        populateCartResponse(preOrderResponseDTO);
+       // populateCartResponse(preOrderResponseDTO);
 
         String razorpayOrderId = null;
         if(StringUtils.isEmpty(preOrder.getRazorpayOrderId()) || !(preOrderResponseDTO.getAmountToPay()> 0 && Double.compare(preOrderResponseDTO.getAmountToPay(), preOrder.getTotalPayAmount()) == 0)){
@@ -74,40 +74,11 @@ public class OrderServiceImpl implements IOrderService {
             preOrder.setRazorpayOrderId(razorpayOrderId);
             preOrder.setTotalPayAmount(preOrderResponseDTO.getAmountToPay());
             preOrder.setPaymentStatus("unpaid");
+            preOrderRepository.save(preOrder);
         }else{
             razorpayOrderId = preOrder.getRazorpayOrderId();
         }
 
-        if(preOrderResponseDTO.getAddressId() == 0 ){
-            preOrderResponseDTO.setAddressId(orderRequest.getAddressId());
-        }
-        preOrderResponseDTO.getCarts().forEach(cart -> {
-            Order order = populateOrder(preOrderResponseDTO);
-            Vendor vendor = new Vendor();
-            vendor.setId(cart.getVendorId());
-            order.setVendor(vendor);
-            order.setPreOrder(preOrder);
-            // Save the order
-            Order savedOrder = orderRepository.save(order);
-            cart.setOrderId(savedOrder.getId());
-            List<OrderItem> orderItems = cart.getMedicine().stream()
-                    .map(medicine -> {
-                        OrderItem item = new OrderItem();
-                        Medicine med = new Medicine();
-                        med.setId(medicine.getId());
-                        item.setMedicine(med);
-                        item.setQty(medicine.getQty());
-                        item.setMrp(medicine.getMrp());
-                        item.setOrderStatus("pending");
-                        item.setOrder(savedOrder);  // Ensure the order reference is set
-                        return item;
-                    })
-                    .collect(Collectors.toList());
-            // Save all order items in one go
-            orderItemRepository.saveAll(orderItems);
-        });
-
-        preOrderRepository.save(preOrder);
 
         orderResponseDTO.setRazorpayOrderId(razorpayOrderId);
         orderResponseDTO.setAmountToPay(preOrderResponseDTO.getAmountToPay());
@@ -122,6 +93,43 @@ public class OrderServiceImpl implements IOrderService {
         if(isValidate){
             PreOrder preOrder = preOrderRepository.findById(orderValidateRequestDTO.getOrderId()).get();
             preOrder.setPaymentStatus("paid");
+
+            Gson gson = new Gson();
+            PreOrderResponseDTO preOrderResponseDTO =  gson.fromJson(preOrder.getPayload(), PreOrderResponseDTO.class);
+            preOrderResponseDTO.setOrderId(preOrder.getId());
+            populateCartResponse(preOrderResponseDTO);
+
+
+/*
+            if(preOrderResponseDTO.getAddressId() == 0 ){
+                preOrderResponseDTO.setAddressId(orderRequest.getAddressId());
+            }*/
+            preOrderResponseDTO.getCarts().forEach(cart -> {
+                Order order = populateOrder(preOrderResponseDTO);
+                Vendor vendor = new Vendor();
+                vendor.setId(cart.getVendorId());
+                order.setVendor(vendor);
+                order.setPreOrder(preOrder);
+                // Save the order
+                Order savedOrder = orderRepository.save(order);
+                cart.setOrderId(savedOrder.getId());
+                List<OrderItem> orderItems = cart.getMedicine().stream()
+                        .map(medicine -> {
+                            OrderItem item = new OrderItem();
+                            Medicine med = new Medicine();
+                            med.setId(medicine.getId());
+                            item.setMedicine(med);
+                            item.setQty(medicine.getQty());
+                            item.setMrp(medicine.getMrp());
+                            item.setOrderStatus("pending");
+                            item.setOrder(savedOrder);  // Ensure the order reference is set
+                            return item;
+                        })
+                        .collect(Collectors.toList());
+                // Save all order items in one go
+                orderItemRepository.saveAll(orderItems);
+            });
+
             preOrderRepository.save(preOrder);
         }
         validateResponseDTO.setValidate(isValidate);
@@ -437,9 +445,9 @@ public class OrderServiceImpl implements IOrderService {
         order.setOrderStatus("new");
         order.setCity(address.getCity());
         order.setAddress(address.getAddress()); // Assuming AddressDTO can be converted
-        order.setTotalAmount(orderRequest.getTotalCartValue());
+        order.setTotalAmount(orderRequest.getAmountToPay());
         order.setPaymentMethod("other");
-        order.setPaymentStatus("unpaid");
+        order.setPaymentStatus("paid");
         order.setDiscount(orderRequest.getDiscount());
 
         return  order;
