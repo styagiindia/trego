@@ -252,7 +252,7 @@ public class OrderServiceImpl implements IOrderService {
                 JsonNode amountNode = itemNode.get("amount");
 
                 // Check if the "id" matches
-                if (idNode != null && orderValidateRequestDTO.getRazorpayPaymentId().equals(idNode.asText()) && orderValidateRequestDTO.getRazorpayAmount().equals(amountNode.asText())) {
+                if (idNode != null && orderValidateRequestDTO.getRazorpayPaymentId().equals(idNode.asText()) ) {
                     System.out.println("Valid 'id' found: " + orderValidateRequestDTO.getRazorpayPaymentId());
                     isValidate =  true;
                 }
