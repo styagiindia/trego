@@ -15,6 +15,7 @@ import com.trego.dto.PreOrderDTO;
 import com.trego.dto.VendorDTO;
 import com.trego.dto.response.CartResponseDTO;
 import com.trego.dto.response.PreOrderResponseDTO;
+import com.trego.dto.response.VandorCartResponseDTO;
 import com.trego.service.IPreOrderService;
 import com.trego.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,8 +52,6 @@ public class PreOrderServiceImpl implements IPreOrderService {
 
         calculateTotalCartValue(preOrderRequest);
         calculateAmountToPay(preOrderRequest);
-
-
 
         Gson gson = new Gson();
         PreOrder preOrder = preOrderRepository.findByUserIdAndPaymentStatus(preOrderRequest.getUserId(), "unpaid");
@@ -86,6 +86,71 @@ public class PreOrderServiceImpl implements IPreOrderService {
                 populateCartResponse(preOrderResponseDTO);
         }
         return  preOrderResponseDTO;
+    }
+
+    @Override
+    public VandorCartResponseDTO vendorSpecificPrice(long orderId) {
+        PreOrder preOrder = preOrderRepository.findByIdAndPaymentStatus(orderId, "paid");
+        VandorCartResponseDTO vandorCartResponseDTO = new VandorCartResponseDTO();
+       if(preOrder != null){
+           Gson gson = new Gson();
+           vandorCartResponseDTO = gson.fromJson(preOrder.getPayload(), VandorCartResponseDTO.class);
+           vandorCartResponseDTO.setOrderId(orderId);
+           // Extract all medicines from the carts using Java Streams
+           List<MedicineDTO> allMedicines =  vandorCartResponseDTO.getCarts().stream()
+                   .flatMap(cart -> cart.getMedicine().stream())
+                   .collect(Collectors.toMap(
+                           MedicineDTO::getId,
+                           medicine -> medicine, // Keep the first occurrence of the medicine
+                           (existing, replacement) -> existing // Handle duplicates by keeping the first entry
+                   ))
+                   .values()
+                   .stream()
+                   .collect(Collectors.toList());
+
+
+           List<CartResponseDTO> cartDTOs = vandorCartResponseDTO.getCarts().stream().map(cart -> {
+               List<MedicineDTO> medicines = allMedicines.stream()
+                       .map(medicine -> {
+                           Optional<Stock> optionalStock = stockRepository.findByMedicineIdAndVendorId(medicine.getId(), cart.getVendorId());
+                           return optionalStock.map(stock -> populateMedicalDTO(medicine, stock)).orElse(null);
+                       })
+                       .filter(Objects::nonNull) // Filters out null values from the stream
+                       .collect(Collectors.toList());
+
+               cart.setMedicine(medicines);
+               Vendor vendor = vendorRepository.findById(cart.getVendorId()).orElse(null);
+               cart.setVendorId(vendor.getId());
+               cart.setName(vendor.getName());
+               if(vendor.getCategory().equalsIgnoreCase("retail")) {
+                   cart.setLogo(Constants.LOGO_BASE_URL + Constants.OFFLINE_BASE_URL+ vendor.getLogo());
+               }else{
+                   cart.setLogo(Constants.LOGO_BASE_URL + Constants.ONLINE_BASE_URL+ vendor.getLogo());
+               }
+               cart.setGstNumber(vendor.getGistin());
+               cart.setLicence(vendor.getDruglicense());
+               // cart.setAddress(vendor.getAddress());
+               cart.setLat(vendor.getLat());
+               cart.setLng(vendor.getLng());
+
+
+               double totalCartValue = medicines.stream()
+                       .mapToDouble(medicine -> medicine.getMrp() * medicine.getQty())
+                       .sum();
+
+               double discount   = medicines.stream()
+                       .mapToDouble(medicine ->(medicine.getMrp() * medicine.getQty()) * medicine.getDiscount() / 100.0)
+                       .sum();
+
+               cart.setTotalCartValue(totalCartValue);
+               cart.setAmountToPay(totalCartValue - discount);
+               return cart;
+           }).collect(Collectors.toList());
+
+           vandorCartResponseDTO.setCarts(cartDTOs);
+       }
+
+        return vandorCartResponseDTO;
     }
 
     private void populateCartResponse(PreOrderResponseDTO preOrderResponseDTO) {

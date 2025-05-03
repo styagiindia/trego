@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 public interface PreOrderRepository extends JpaRepository<PreOrder, Long> {
     PreOrder findByUserId(long userId);
     PreOrder findByUserIdAndPaymentStatus(Long userId, String paymentStatus);
+    PreOrder findByIdAndPaymentStatus(Long id, String paymentStatus);
 
 /*
 
