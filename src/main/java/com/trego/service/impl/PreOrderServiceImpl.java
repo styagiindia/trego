@@ -90,7 +90,7 @@ public class PreOrderServiceImpl implements IPreOrderService {
 
     @Override
     public VandorCartResponseDTO vendorSpecificPrice(long orderId) {
-        PreOrder preOrder = preOrderRepository.findByIdAndPaymentStatus(orderId, "paid");
+        PreOrder preOrder = preOrderRepository.findByIdAndPaymentStatus(orderId, "unpaid");
         VandorCartResponseDTO vandorCartResponseDTO = new VandorCartResponseDTO();
        if(preOrder != null){
            Gson gson = new Gson();
