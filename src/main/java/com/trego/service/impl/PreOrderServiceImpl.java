@@ -78,7 +78,7 @@ public class PreOrderServiceImpl implements IPreOrderService {
     public PreOrderResponseDTO getOrdersByUserId(Long userId) {
         Gson gson = new Gson();
         PreOrderResponseDTO preOrderResponseDTO = new PreOrderResponseDTO();
-         Optional<PreOrder> preOrder = Optional.ofNullable(preOrderRepository.findByUserId(userId));
+         Optional<PreOrder> preOrder = Optional.ofNullable(preOrderRepository.findByUserIdAndPaymentStatus(userId, "unpaid"));
         if (preOrder.isPresent()) {
                 PreOrder tempPreOrder = preOrder.get();
                 preOrderResponseDTO = gson.fromJson(tempPreOrder.getPayload(), PreOrderResponseDTO.class);
@@ -96,17 +96,29 @@ public class PreOrderServiceImpl implements IPreOrderService {
            Gson gson = new Gson();
            vandorCartResponseDTO = gson.fromJson(preOrder.getPayload(), VandorCartResponseDTO.class);
            vandorCartResponseDTO.setOrderId(orderId);
+
+
            // Extract all medicines from the carts using Java Streams
            List<MedicineDTO> allMedicines =  vandorCartResponseDTO.getCarts().stream()
-                   .flatMap(cart -> cart.getMedicine().stream())
+                   .flatMap(cart -> cart.getMedicine().stream()
+                           .map(medicine -> {
+                               medicine.setQty(medicine.getQty()); // Assuming MedicineDTO has a quantity field
+                               return medicine;
+                           })
+                   )
                    .collect(Collectors.toMap(
                            MedicineDTO::getId,
-                           medicine -> medicine, // Keep the first occurrence of the medicine
-                           (existing, replacement) -> existing // Handle duplicates by keeping the first entry
+                           medicine -> medicine,
+                           (existing, replacement) -> {
+                               existing.setQty(existing.getQty() + replacement.getQty()); // Merge quantity
+                               return existing;
+                           }
                    ))
                    .values()
                    .stream()
                    .collect(Collectors.toList());
+
+
 
 
            List<CartResponseDTO> cartDTOs = vandorCartResponseDTO.getCarts().stream().map(cart -> {
