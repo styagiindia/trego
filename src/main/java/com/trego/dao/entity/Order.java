@@ -61,11 +61,18 @@ public class Order {
     @Column(nullable = true)
     private String orderStatus;
 
-    @Column(nullable = true)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
 
     @Column(nullable = true)
     private LocalDateTime updatedAt;
+
 
     @ManyToOne
     @JoinColumn(name = "pre_order_id")

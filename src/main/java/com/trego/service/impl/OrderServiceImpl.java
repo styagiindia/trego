@@ -100,10 +100,6 @@ public class OrderServiceImpl implements IOrderService {
             populateCartResponse(preOrderResponseDTO);
 
 
-/*
-            if(preOrderResponseDTO.getAddressId() == 0 ){
-                preOrderResponseDTO.setAddressId(orderRequest.getAddressId());
-            }*/
             preOrderResponseDTO.getCarts().forEach(cart -> {
                 Order order = populateOrder(preOrderResponseDTO);
                 Vendor vendor = new Vendor();
@@ -150,6 +146,7 @@ public class OrderServiceImpl implements IOrderService {
             responseDTO.setRazorpayOrderId(preOrder.getRazorpayOrderId());
             responseDTO.setAmountToPay(preOrder.getTotalPayAmount());
             responseDTO.setPaymentStatus(preOrder.getPaymentStatus());
+            responseDTO.setCreateDate(preOrder.getCreatedAt());
 
             List<OrderDTO> orderDTO = populateOrders(preOrder);
             responseDTO.setOrders(orderDTO);
@@ -172,10 +169,18 @@ public class OrderServiceImpl implements IOrderService {
             orderDTO.setTotalAmount(order.getTotalAmount());
             orderDTO.setAddress(order.getAddress());
             orderDTO.setPinCode(order.getPincode());
+            orderDTO.setCreateDate(order.getCreatedAt());
 
             VendorDTO vendorDTO = new VendorDTO();
             vendorDTO.setId(order.getVendor().getId());
             vendorDTO.setName(order.getVendor().getName());
+
+            if(order.getVendor().getCategory().equalsIgnoreCase("retail")) {
+                vendorDTO.setLogo(Constants.LOGO_BASE_URL + Constants.OFFLINE_BASE_URL+ order.getVendor().getLogo());
+            }else{
+                vendorDTO.setLogo(Constants.LOGO_BASE_URL + Constants.ONLINE_BASE_URL+ order.getVendor().getLogo());
+            }
+
             orderDTO.setVendor(vendorDTO);
 
             // Populate OrderItems list
@@ -191,6 +196,8 @@ public class OrderServiceImpl implements IOrderService {
                 Map<String, Object> medicineDetails = new HashMap<>();
                 medicineDetails.put("medicineId" , orderItem.getMedicine().getId());
                 medicineDetails.put("medicineName" , orderItem.getMedicine().getName());
+                medicineDetails.put("medicineLogo" ,Constants.LOGO_BASE_URL  + Constants.MEDICINES_BASE_URL +  orderItem.getMedicine().getPhoto1());
+
                 orderItemDTO.setMedicine(medicineDetails);
                 orderItemsList.add(orderItemDTO);
             });
