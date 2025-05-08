@@ -29,6 +29,13 @@ public class PreOrder {
     @Column(name = "payment_status", nullable = true)
     private String paymentStatus;
 
+    @Column(name = "mobile_no", nullable = true)
+    private String mobileNo;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     @Column(name = "created_by", nullable = false)
     private String createdBy;
 

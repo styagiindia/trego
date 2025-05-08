@@ -142,9 +142,29 @@ public class OrderServiceImpl implements IOrderService {
         Page<OrderResponseDTO> responseDTOPage = preOrdersList.map(preOrder -> {
             OrderResponseDTO responseDTO = new OrderResponseDTO();
 
+            Gson gson = new Gson();
+            PreOrderResponseDTO preOrderResponseDTO =  gson.fromJson(preOrder.getPayload(), PreOrderResponseDTO.class);
+
             responseDTO.setUserId(preOrder.getUserId());
             responseDTO.setRazorpayOrderId(preOrder.getRazorpayOrderId());
+            responseDTO.setOrderId(preOrder.getId());
+            responseDTO.setMobileNo(preOrder.getMobileNo());
+
+            Address address = preOrder.getAddress();
+
+            AddressDTO addressDTO =  new AddressDTO(
+                    address.getId(),
+                    address.getAddress(),
+                    address.getCity(),
+                    address.getLandmark(),
+                    address.getPincode(),
+                    address.getLat(),
+                    address.getLng(), address.getUser().getId() , address.getMobileNo() , address.getName(), address.getAddressType());
+
+            responseDTO.setAddress(addressDTO);
             responseDTO.setAmountToPay(preOrder.getTotalPayAmount());
+            responseDTO.setTotalCartValue(preOrderResponseDTO.getTotalCartValue());
+            responseDTO.setDiscount(preOrderResponseDTO.getDiscount());
             responseDTO.setPaymentStatus(preOrder.getPaymentStatus());
             responseDTO.setCreateDate(preOrder.getCreatedAt());
 
@@ -165,6 +185,7 @@ public class OrderServiceImpl implements IOrderService {
 
             // Populate fields of OrderDTO based on Order entity
             orderDTO.setOrderId(order.getId());
+            orderDTO.setPaymentStatus(order.getPaymentStatus());
             orderDTO.setOrderStatus(order.getOrderStatus());
             orderDTO.setTotalAmount(order.getTotalAmount());
             orderDTO.setAddress(order.getAddress());
@@ -196,6 +217,7 @@ public class OrderServiceImpl implements IOrderService {
                 Map<String, Object> medicineDetails = new HashMap<>();
                 medicineDetails.put("medicineId" , orderItem.getMedicine().getId());
                 medicineDetails.put("medicineName" , orderItem.getMedicine().getName());
+                medicineDetails.put("packing" , orderItem.getMedicine().getPacking());
                 medicineDetails.put("medicineLogo" ,Constants.LOGO_BASE_URL  + Constants.MEDICINES_BASE_URL +  orderItem.getMedicine().getPhoto1());
 
                 orderItemDTO.setMedicine(medicineDetails);

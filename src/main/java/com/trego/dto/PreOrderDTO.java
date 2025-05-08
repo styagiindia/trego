@@ -10,6 +10,7 @@ public class PreOrderDTO {
     private long userId;
     private long orderId;
     private long addressId;
+    private String mobileNo;
     private double totalCartValue;
     private double amountToPay;
     private double discount;

@@ -1,14 +1,8 @@
 package com.trego.service.impl;
 
 import com.google.gson.Gson;
-import com.trego.dao.entity.Medicine;
-import com.trego.dao.entity.PreOrder;
-import com.trego.dao.entity.Stock;
-import com.trego.dao.entity.Vendor;
-import com.trego.dao.impl.MedicineRepository;
-import com.trego.dao.impl.PreOrderRepository;
-import com.trego.dao.impl.StockRepository;
-import com.trego.dao.impl.VendorRepository;
+import com.trego.dao.entity.*;
+import com.trego.dao.impl.*;
 import com.trego.dto.CartDTO;
 import com.trego.dto.MedicineDTO;
 import com.trego.dto.PreOrderDTO;
@@ -42,6 +36,8 @@ public class PreOrderServiceImpl implements IPreOrderService {
     @Autowired
     private VendorRepository vendorRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Autowired
     private MedicineRepository medicineRepository;
@@ -62,6 +58,11 @@ public class PreOrderServiceImpl implements IPreOrderService {
             preOrder.setCreatedBy("SYSTEM");
             preOrder.setPayload(gson.toJson(preOrderRequest));
 
+            preOrder.setMobileNo(preOrderRequest.getMobileNo());
+            if(preOrder.getId() != null){
+                Address address = addressRepository.findById(preOrder.getId()).get();
+                preOrder.setAddress(address);
+            }
         }else{
             preOrder.setPayload(gson.toJson(preOrderRequest));
 
