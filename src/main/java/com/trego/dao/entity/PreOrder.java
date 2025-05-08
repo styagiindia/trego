@@ -29,6 +29,10 @@ public class PreOrder {
     @Column(name = "payment_status", nullable = true)
     private String paymentStatus;
 
+
+    @Column(name = "order_status", nullable = false)
+    private String orderStatus;
+
     @Column(name = "mobile_no", nullable = true)
     private String mobileNo;
 

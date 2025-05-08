@@ -2,8 +2,10 @@ package com.trego.service;
 
 import com.trego.dao.entity.Order;
 import com.trego.dao.entity.OrderItem;
+import com.trego.dto.CancelOrderRequestDTO;
 import com.trego.dto.OrderRequestDTO;
 import com.trego.dto.OrderValidateRequestDTO;
+import com.trego.dto.response.CancelOrderResponseDTO;
 import com.trego.dto.response.OrderResponseDTO;
 import com.trego.dto.response.OrderValidateResponseDTO;
 import com.trego.dto.response.PreOrderResponseDTO;
@@ -18,4 +20,6 @@ public interface IOrderService {
     OrderValidateResponseDTO validateOrder(OrderValidateRequestDTO orderValidateRequestDTO) throws Exception;
 
     Page<OrderResponseDTO> fetchAllOrders(Long userId, int page, int size);
+
+    CancelOrderResponseDTO cancelOrders(CancelOrderRequestDTO request) throws Exception;
 }

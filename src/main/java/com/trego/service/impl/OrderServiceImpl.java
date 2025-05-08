@@ -177,6 +177,32 @@ public class OrderServiceImpl implements IOrderService {
 
     }
 
+    @Override
+    public CancelOrderResponseDTO cancelOrders(CancelOrderRequestDTO request) throws Exception {
+        List<Long> orderIds = request.getOrders();
+        List<Long> subOrderIds = request.getSubOrders();
+        if (orderIds.isEmpty() && subOrderIds.isEmpty()) {
+            return new CancelOrderResponseDTO("No orders found to cancel", List.of(), List.of());
+        }
+        if(!orderIds.isEmpty()) {
+            orderIds.forEach(orderId -> {
+                System.out.println("Processing order ID: " + orderId);
+                // Add logic here to update order status, fetch details, etc.
+                PreOrder preOrder =   preOrderRepository.findById(orderId).get();
+                subOrderIds.addAll(preOrder.getOrders().stream()
+                        .map(Order::getId) // Assuming Order has a getId() method
+                        .collect(Collectors.toList()));
+                preOrderRepository.updateOrderStatus(orderIds, "cancelled");
+
+            });
+
+        }
+        if(!subOrderIds.isEmpty()) {
+            orderRepository.updateOrderStatus(subOrderIds, "cancelled");
+        }
+        return new CancelOrderResponseDTO("Orders and sub-orders cancelled successfully", orderIds, subOrderIds);
+    }
+
     private List<OrderDTO> populateOrders(PreOrder preOrder) {
         List<OrderDTO> orderDTOList = new ArrayList<>();
 // Iterate over orders in PreOrder
