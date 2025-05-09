@@ -29,12 +29,8 @@ public class PreOrder {
     @Column(name = "payment_status", nullable = true)
     private String paymentStatus;
 
-
     @Column(name = "order_status", nullable = true)
     private String orderStatus;
-
-
-
 
     @Column(name = "mobile_no", nullable = true)
     private String mobileNo;
@@ -53,7 +49,6 @@ public class PreOrder {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
-
 
     @OneToMany(mappedBy = "preOrder")
     private List<Order> orders;  // Related to Stock

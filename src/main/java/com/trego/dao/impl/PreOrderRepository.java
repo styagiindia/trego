@@ -19,7 +19,7 @@ public interface PreOrderRepository extends JpaRepository<PreOrder, Long> {
 
         @Query("SELECT p FROM preorders p " +
                 "JOIN FETCH p.orders o " +
-                "WHERE p.userId = :userId")
+                "WHERE p.userId = :userId ORDER BY p.createdAt desc")
         Page<PreOrder> fetchAllOrdersByUserId(@Param("userId") Long userId, Pageable pageable);
 
 

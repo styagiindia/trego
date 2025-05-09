@@ -144,14 +144,11 @@ public class OrderServiceImpl implements IOrderService {
 
             Gson gson = new Gson();
             PreOrderResponseDTO preOrderResponseDTO =  gson.fromJson(preOrder.getPayload(), PreOrderResponseDTO.class);
-
             responseDTO.setUserId(preOrder.getUserId());
             responseDTO.setRazorpayOrderId(preOrder.getRazorpayOrderId());
             responseDTO.setOrderId(preOrder.getId());
             responseDTO.setMobileNo(preOrder.getMobileNo());
-
             Address address = preOrder.getAddress();
-
             AddressDTO addressDTO =  new AddressDTO(
                     address.getId(),
                     address.getAddress(),
