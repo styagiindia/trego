@@ -54,10 +54,10 @@ public class PreOrderServiceImpl implements IPreOrderService {
         if(preOrder == null){
             preOrder = new PreOrder();
             preOrder.setPaymentStatus("unpaid");
+            preOrder.setOrderStatus("new");
             preOrder.setUserId(preOrderRequest.getUserId());
             preOrder.setCreatedBy("SYSTEM");
             preOrder.setPayload(gson.toJson(preOrderRequest));
-
             preOrder.setMobileNo(preOrderRequest.getMobileNo());
             if(preOrder.getId() != null){
                 Address address = addressRepository.findById(preOrder.getId()).get();

@@ -30,8 +30,11 @@ public class PreOrder {
     private String paymentStatus;
 
 
-    @Column(name = "order_status", nullable = false)
+    @Column(name = "order_status", nullable = true)
     private String orderStatus;
+
+
+
 
     @Column(name = "mobile_no", nullable = true)
     private String mobileNo;
