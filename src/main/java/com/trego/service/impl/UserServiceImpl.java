@@ -20,13 +20,22 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        User user = new User();
-        user.setName(userDTO.getName());
-        user.setPassword(userDTO.getPassword());
-        user.setEmail(userDTO.getEmail());
-        user.setRole(userDTO.getRole());
-        user = userRepository.save(user);
-        userDTO.setId(user.getId());
+        User existingUser =  userRepository.findByEmail(userDTO.getEmail());
+        if(existingUser == null ){
+           User user = new User();
+           user.setName(userDTO.getName());
+           user.setPassword(userDTO.getPassword());
+           user.setEmail(userDTO.getEmail());
+           user.setRole(userDTO.getRole());
+           user = userRepository.save(user);
+           userDTO.setId(user.getId());
+       }else{
+           userDTO.setId(existingUser.getId());
+            userDTO.setName(existingUser.getName());
+            userDTO.setPassword(existingUser.getPassword());
+            userDTO.setEmail(existingUser.getEmail());
+            userDTO.setRole(existingUser.getRole());
+       }
         return userDTO;
     }
 
