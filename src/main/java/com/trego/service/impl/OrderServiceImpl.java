@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -336,7 +337,12 @@ public class OrderServiceImpl implements IOrderService {
         // Create a JSON object
         JsonObject jsonObject = new JsonObject();
         // Add fields to the JSON object
-        jsonObject.addProperty("amount", preOrderResponseDTO.getAmountToPay() * 100);
+        BigDecimal amount = new BigDecimal(preOrderResponseDTO.getAmountToPay())
+                .setScale(2, BigDecimal.ROUND_HALF_UP);
+        int convertedAmount = amount.multiply(BigDecimal.valueOf(100)).intValue();
+
+
+        jsonObject.addProperty("amount",  convertedAmount);
         jsonObject.addProperty("currency", "INR");
         jsonObject.addProperty("receipt", "receipt#123");
 
