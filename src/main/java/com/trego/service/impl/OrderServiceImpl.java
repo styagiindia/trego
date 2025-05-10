@@ -74,6 +74,13 @@ public class OrderServiceImpl implements IOrderService {
             preOrder.setRazorpayOrderId(razorpayOrderId);
             preOrder.setTotalPayAmount(preOrderResponseDTO.getAmountToPay());
             preOrder.setPaymentStatus("unpaid");
+
+            if(orderRequest.getAddressId() > 0){
+                Address address = new Address();
+                address.setId(orderRequest.getAddressId());
+                preOrder.setAddress(address);
+            }
+
             preOrderRepository.save(preOrder);
         }else{
             razorpayOrderId = preOrder.getRazorpayOrderId();
