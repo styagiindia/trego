@@ -17,10 +17,8 @@ public interface PreOrderRepository extends JpaRepository<PreOrder, Long> {
     PreOrder findByUserIdAndPaymentStatus(Long userId, String paymentStatus);
     PreOrder findByIdAndPaymentStatus(Long id, String paymentStatus);
 
-        @Query("SELECT p FROM preorders p " +
-                "JOIN FETCH p.orders o " +
-                "WHERE p.userId = :userId ORDER BY p.createdAt desc")
-        Page<PreOrder> fetchAllOrdersByUserId(@Param("userId") Long userId, Pageable pageable);
+    @Query("SELECT p FROM preorders p JOIN FETCH p.orders o WHERE p.userId = :userId ORDER BY p.createdAt desc")
+    Page<PreOrder> fetchAllOrdersByUserId(@Param("userId") Long userId, Pageable pageable);
 
 
     @Transactional
