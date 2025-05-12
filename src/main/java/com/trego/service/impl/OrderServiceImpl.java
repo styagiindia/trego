@@ -76,12 +76,7 @@ public class OrderServiceImpl implements IOrderService {
             preOrder.setTotalPayAmount(preOrderResponseDTO.getAmountToPay());
             preOrder.setPaymentStatus("unpaid");
 
-            if(orderRequest.getAddressId() > 0){
-                Address address = new Address();
-                address.setId(orderRequest.getAddressId());
-                preOrder.setAddress(address);
-            }
-
+            preOrder.setAddressId(orderRequest.getAddressId());
             preOrderRepository.save(preOrder);
         }else{
             razorpayOrderId = preOrder.getRazorpayOrderId();
@@ -156,17 +151,23 @@ public class OrderServiceImpl implements IOrderService {
             responseDTO.setRazorpayOrderId(preOrder.getRazorpayOrderId());
             responseDTO.setOrderId(preOrder.getId());
             responseDTO.setMobileNo(preOrder.getMobileNo());
-            Address address = preOrder.getAddress();
-            AddressDTO addressDTO =  new AddressDTO(
-                    address.getId(),
-                    address.getAddress(),
-                    address.getCity(),
-                    address.getLandmark(),
-                    address.getPincode(),
-                    address.getLat(),
-                    address.getLng(), address.getUser().getId() , address.getMobileNo() , address.getName(), address.getAddressType());
+            Optional<Address> addressOpt = addressRepository.findById(preOrder.getAddressId());
 
-            responseDTO.setAddress(addressDTO);
+            if (addressOpt.isPresent()) {
+                Address address = addressOpt.get();
+                AddressDTO addressDTO  =  new AddressDTO(
+                        address.getId(),
+                        address.getAddress(),
+                        address.getCity(),
+                        address.getLandmark(),
+                        address.getPincode(),
+                        address.getLat(),
+                        address.getLng(), address.getUser().getId() , address.getMobileNo() , address.getName(), address.getAddressType());
+                responseDTO.setAddress(addressDTO);
+            }
+
+
+
             responseDTO.setAmountToPay(preOrder.getTotalPayAmount());
             responseDTO.setTotalCartValue(preOrderResponseDTO.getTotalCartValue());
             responseDTO.setDiscount(preOrderResponseDTO.getDiscount());

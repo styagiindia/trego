@@ -35,10 +35,9 @@ public class PreOrder {
     @Column(name = "mobile_no", nullable = true)
     private String mobileNo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id")
-    private Address address;
 
+    @Column(name = "address_id", nullable = true)
+    private long addressId;
 
     @Column(name = "created_by", nullable = false)
     private String createdBy;
