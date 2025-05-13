@@ -102,6 +102,10 @@ public class OrderServiceImpl implements IOrderService {
             preOrderResponseDTO.setOrderId(preOrder.getId());
             populateCartResponse(preOrderResponseDTO);
 
+            if(preOrderResponseDTO.getAddressId() == 0){
+                preOrderResponseDTO.setAddressId(preOrder.getAddressId());
+            }
+
 
             preOrderResponseDTO.getCarts().forEach(cart -> {
                 Order order = populateOrder(preOrderResponseDTO);
