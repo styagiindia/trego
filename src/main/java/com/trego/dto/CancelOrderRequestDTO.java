@@ -8,5 +8,7 @@ import java.util.List;
 public class CancelOrderRequestDTO {
     private List<Long> orders;
     private List<Long> subOrders;
+    private String reasonId;
+    private String reason;
 
 }

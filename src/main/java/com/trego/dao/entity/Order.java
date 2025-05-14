@@ -61,6 +61,13 @@ public class Order {
     @Column(nullable = true)
     private String orderStatus;
 
+
+    @Column(nullable = true)
+    private String cancelReason;
+
+    @Column(nullable = true)
+    private String cancelReasonId;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 

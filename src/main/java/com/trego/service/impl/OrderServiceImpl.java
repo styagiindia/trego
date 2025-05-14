@@ -208,7 +208,7 @@ public class OrderServiceImpl implements IOrderService {
 
         }
         if(!subOrderIds.isEmpty()) {
-            orderRepository.updateOrderStatus(subOrderIds, "cancelled");
+            orderRepository.updateOrderStatusAndReason(subOrderIds, "cancelled", request.getReason(), request.getReasonId());
         }
         return new CancelOrderResponseDTO("Orders and sub-orders cancelled successfully", orderIds, subOrderIds);
     }
@@ -227,7 +227,8 @@ public class OrderServiceImpl implements IOrderService {
             orderDTO.setAddress(order.getAddress());
             orderDTO.setPinCode(order.getPincode());
             orderDTO.setCreateDate(order.getCreatedAt());
-
+            orderDTO.setCancelReason(order.getCancelReason());
+            orderDTO.setCancelReasonId(order.getCancelReasonId());
             VendorDTO vendorDTO = new VendorDTO();
             vendorDTO.setId(order.getVendor().getId());
             vendorDTO.setName(order.getVendor().getName());

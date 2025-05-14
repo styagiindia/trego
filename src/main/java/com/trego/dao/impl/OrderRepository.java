@@ -13,6 +13,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE orders o SET o.orderStatus = :status WHERE o.id IN :ids")
-    int updateOrderStatus(@Param("ids") List<Long> orderIds, @Param("status") String status);
+    @Query("UPDATE orders o SET o.orderStatus = :status, o.cancelReason = :reason, o.cancelReasonId = :reasonId  WHERE o.id IN :ids")
+    int updateOrderStatusAndReason(@Param("ids") List<Long> orderIds, @Param("status") String status, @Param("reason") String reason, @Param("reasonId") String reasonId);
 }

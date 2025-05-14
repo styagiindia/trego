@@ -22,6 +22,8 @@ public class OrderDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
     private List<OrderItemDTO> orderItemsList;
+    private String cancelReason;
+    private String cancelReasonId;
 
 
 }
