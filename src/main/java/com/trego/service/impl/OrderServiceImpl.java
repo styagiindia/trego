@@ -229,6 +229,7 @@ public class OrderServiceImpl implements IOrderService {
             orderDTO.setCreateDate(order.getCreatedAt());
             orderDTO.setCancelReason(order.getCancelReason());
             orderDTO.setCancelReasonId(order.getCancelReasonId());
+            orderDTO.setDiscount(order.getDiscount());
             VendorDTO vendorDTO = new VendorDTO();
             vendorDTO.setId(order.getVendor().getId());
             vendorDTO.setName(order.getVendor().getName());

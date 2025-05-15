@@ -217,7 +217,6 @@ public class PreOrderServiceImpl implements IPreOrderService {
         medicineDTO.setSaltComposition(tempMedicine.getSaltComposition());
         medicineDTO.setPhoto1(Constants.LOGO_BASE_URL  + Constants.MEDICINES_BASE_URL + tempMedicine.getPhoto1());
         medicineDTO.setDiscount(stock.getDiscount());
-        medicineDTO.setMrp(stock.getMrp());
         medicineDTO.setActualPrice(stock.getMrp());
         medicineDTO.setExpiryDate(stock.getExpiryDate());
         return medicineDTO;

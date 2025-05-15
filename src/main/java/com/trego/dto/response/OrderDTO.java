@@ -14,6 +14,7 @@ public class OrderDTO {
 
     private long  orderId;
     private double totalAmount;
+    private double discount;
     private String orderStatus;
     private String paymentStatus;
     private String address;
@@ -24,6 +25,7 @@ public class OrderDTO {
     private List<OrderItemDTO> orderItemsList;
     private String cancelReason;
     private String cancelReasonId;
+
 
 
 }
